@@ -26,7 +26,10 @@ html {
 .list {
 	font-weight: bold;
 }
-
+.center {
+	text-align: center;
+	float: center;
+}
 h1 {
 	text-align: center;
 	margin-top: 10px;
