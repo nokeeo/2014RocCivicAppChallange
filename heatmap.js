@@ -6,7 +6,7 @@ function init(){
 	// Set map options
 	var mapOptions = {
 		zoom: 13,
-		center: new google.maps.LatLng(37.782551, -122.445368),
+		center: new google.maps.LatLng(43.1656, -77.6114),
 		mapTypeId: google.maps.MapTypeId.TERRAIN
 	};
 	// Create map
