@@ -1,3 +1,5 @@
+var markers = [];
+
 function sendGETRequst(url, params, success, error) {
     var index = 0;
     var formatParams = '';
@@ -29,31 +31,16 @@ function sendGETRequst(url, params, success, error) {
 function parseData(e){
 	var positions = new Array(); // heatmap positions
 
-var markers = [];
 	for(var i = 0; i < e.length; i++){
 
-		//positions[i] = new google.maps.LatLng( e[i].lat, e[i].lng ); // heatmap positions
-
-var marker = new google.maps.Marker({
-        position: new google.maps.LatLng( e[i].lat, e[i].lng ),
-        map: map,
-        title:(String)(e[i].lat + ", " + e[i].lng)
-      });
-      var infowindow = new google.maps.InfoWindow({
-        content: (String)(e[i].lat + ", " + e[i].lng)
-      });
-      google.maps.event.addListener(marker, 'click', function() {
-        infowindow.open(map,marker);
-      });
-markers.push(marker);
-
-
-
-
+		var marker = new google.maps.Marker({
+			position: new google.maps.LatLng( e[i].lat, e[i].lng ),
+			map: map,
+			title:(String)(e[i].lat + ", " + e[i].lng)
+		  });
+		markers[i] = marker;
 	}
-
-
-var markerCluster = new MarkerClusterer(map, markers);
+	var markerCluster = new MarkerClusterer(map, markers);
 
 	//setHeatMap(positions); // heatmap positions
 }
@@ -65,7 +52,7 @@ function handleError(e){
 function getRange(start, end){
 	console.log("getRange");
 	var data = {'start': start, 'end': end};
-	sendGETRequst('http://civicapp.gearchicken.com/dev/getIncidents.php', data, parseData, handleError);
+	sendGETRequst('/civicapp/dev/getIncidents.php', data, parseData, handleError);
 }
 
 window.onload = getRange('2014-02-01', '2014-02-14');
