@@ -28,7 +28,7 @@ html {
 }
 .center {
 	text-align: center;
-	float: center;
+	/*float: center;*/
 }
 h1 {
 	text-align: center;

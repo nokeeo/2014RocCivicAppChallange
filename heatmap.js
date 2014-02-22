@@ -12,17 +12,15 @@ function init(){
 	// Create map
 	map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 	// Get & set data
-	getData();
 }
 
 function setHeatMap(dataPoints){
 	console.log("set");
-	var beg = Math.random()*250;
-	var end = beg + 250;
-	console.log(beg + ", " + end);
-	var limitedData =  dataPoints.slice( beg,end );
-	var points  = new google.maps.MVCArray(limitedData);
+	var points  = new google.maps.MVCArray(dataPoints);
+	console.log(points[0]);
 	heatmap = new google.maps.visualization.HeatmapLayer({ data: points });
+	heatmap.set('disspating', false);
+	heatmap.set('opacity', 1);
 	heatmap.setMap(map);
 }
 

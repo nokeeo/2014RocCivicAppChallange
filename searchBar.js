@@ -34,10 +34,6 @@ function locationChanged()
 
   
   console.log("Address: " + locationText);
-  
-  //Update HeatMap
-  heatmap.setMap(null);
-  getData();
 
 }
 init();

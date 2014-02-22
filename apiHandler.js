@@ -18,21 +18,45 @@ function sendGETRequst(url, params, success, error) {
     var xmlHttp = new XMLHttpRequest();   
     xmlHttp.onreadystatechange=function() {
         if(xmlHttp.readyState === 4) {
-            if(xmlHttp.status === 200){
+            if(xmlHttp.status === 200)
                 success(JSON.parse(xmlHttp.responseText));
-			}
-            else{
-                error(JSON.parse(xmlHttp.responseText));
-			}
         }
-    }
-    
+    }    
     xmlHttp.open("GET", fullUrl, true);
     xmlHttp.send();
 }
 
 function parseData(e){
-	console.log(e);
+	var positions = new Array(); // heatmap positions
+	console.log(e[0].lat + ", " + e[0].lng);
+	console.log(e[5].lat + ", " + e[5].lng);
+var markers = [];
+	for(var i = 0; i < e.length; i++){
+
+		//positions[i] = new google.maps.LatLng( e[i].lat, e[i].lng ); // heatmap positions
+
+var marker = new google.maps.Marker({
+        position: new google.maps.LatLng( e[i].lat, e[i].lng ),
+        map: map,
+        title:(String)(e[i].lat + ", " + e[i].lng)
+      });
+      var infowindow = new google.maps.InfoWindow({
+        content: (String)(e[i].lat + ", " + e[i].lng)
+      });
+      google.maps.event.addListener(marker, 'click', function() {
+        infowindow.open(map,marker);
+      });
+markers.push(marker);
+
+
+
+
+	}
+
+
+var markerCluster = new MarkerClusterer(map, markers);
+
+	//setHeatMap(positions); // heatmap positions
 }
 
 function handleError(e){
@@ -40,8 +64,9 @@ function handleError(e){
 }
 
 function getRange(start, end){
+	console.log("getRange");
 	var data = {'start': start, 'end': end};
-	sendRequest('http://civiapp.gearchicken.com/dev/apiHandler.php', data, parseData, handleError);
+	sendGETRequst('http://civicapp.gearchicken.com/dev/getIncidents.php', data, parseData, handleError);
 }
 
-window.onload = getRange('2014-02-01', '2014-02-03');
+window.onload = getRange('2014-02-01', '2014-02-14');
