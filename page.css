@@ -3,6 +3,8 @@ body {
 	margin-bottom: 10%;
 	margin-left: 30%;
 	margin-right: 30%;
+    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    font-weight: 300;
 }
 
 html {
@@ -12,10 +14,10 @@ html {
 	background-attachment: fixed;
 	background-repeat: no-repeat;
 	background-image: linear-gradient(to bottom,
-				rgb(100, 139, 237) 00%,
+				rgb(226, 226, 226) 00%,
 				rgb(255, 255, 255) 10%,
 				rgb(255, 255, 255) 90%,
-				rgb(100, 139, 237) 100%);
+				rgb(226, 226, 226) 100%);
 }
 
 .inlineList {
