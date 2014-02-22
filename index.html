@@ -6,12 +6,14 @@
     <link rel="stylesheet" type = "text/css" href="./page.css">
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=visualization"></script>
 	<script type = "text/javascript" src="heatmap.js"></script>
+	<script type = "text/javascript" src="searchBar.js"></script>
   </head>
   <body>
     <h1>Hello World!</h1>
     <div class="center">
       <p>Welcome to CivicApp.GearChicken.com !</p>
       <p>Type In a location to find the Crime Heat-Map for:</p><input type="text" id="locationBar" onchange="locationChanged()">
+      <button type="button" id="btnUpdate">Update Heat Map</button>
     </div>
     <div id="map-canvas"/>
   </body>

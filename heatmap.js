@@ -7,17 +7,25 @@ function init(){
 	var mapOptions = {
 		zoom: 13,
 		center: new google.maps.LatLng(37.782551, -122.445368),
-		mapTypeId: google.maps.MapTypeId.SATELLITE
+		mapTypeId: google.maps.MapTypeId.TERRAIN
 	};
 	// Create map
 	map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 	// Get & set data
 	getData();
+	document.querySelector("#btnUpdate").addEventListener('click', function(){
+		heatmap.setMap(null);
+		getData();
+	});
 }
 
-function setData(dataPoints){
+function setHeatMap(dataPoints){
 	console.log("set");
-	var points  = new google.maps.MVCArray(dataPoints);
+	var beg = Math.random()*250;
+	var end = beg + 250;
+	console.log(beg + ", " + end);
+	var limitedData =  dataPoints.slice( beg,end );
+	var points  = new google.maps.MVCArray(limitedData);
 	heatmap = new google.maps.visualization.HeatmapLayer({ data: points });
 	heatmap.setMap(map);
 }
@@ -527,7 +535,7 @@ function getData(){
 		  new google.maps.LatLng(37.752986, -122.403112),
 		  new google.maps.LatLng(37.751266, -122.403355)
 		];
-	setData(data);
+	setHeatMap(data);
 }
 
 
