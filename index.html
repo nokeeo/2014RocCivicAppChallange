@@ -3,9 +3,7 @@
   <head>
     <title>2014 Rochester Civic App Challenge</title>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-    <style type = "text/css">
-      #map-canvas { width: 640px; height: 480px }
-    </style>
+    <link rel="stylesheet" type = "text/css" href="./page.css">
     <script type="text/javascript"
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBM7EtwuEQnMfkcI_YVOmZ0QzjRKHCoE1c&sensor=true">
     </script>
@@ -17,6 +15,12 @@
         };
         var map = new google.maps.Map(document.getElementById("map-canvas"),
             mapOptions);
+        // To add the marker to the map, use the 'map' property
+        var marker = new google.maps.Marker({
+          position: new google.maps.LatLng(-34.397, 150.647),
+          map: map,
+          title:"Hello World!"
+         });
       }
       google.maps.event.addDomListener(window, 'load', initialize);
     </script>
