@@ -25,10 +25,12 @@ function getAgencyForId($id) {
 
 function getRegionForId($id) {
     $regionCodes = getRegionCodes();
-    foreach($regionCodes as $key => $value) {
-        if(strpos($id, $key) == 0)
-            return $value;   
+    $regionString = substr($id, 0, 3);
+    $region = $regionCodes[$regionString];
+    if(is_null($region)) {
+        $region = $regionCodes[substr($id, 0, 2)];
     }
+    return $region;
 }
 
 function getRegionCodes() {
