@@ -13,10 +13,6 @@ function init(){
 	map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 	// Get & set data
 	getData();
-	document.querySelector("#btnUpdate").addEventListener('click', function(){
-		heatmap.setMap(null);
-		getData();
-	});
 }
 
 function setHeatMap(dataPoints){
