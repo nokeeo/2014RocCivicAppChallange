@@ -28,8 +28,7 @@ function sendGETRequst(url, params, success, error) {
 
 function parseData(e){
 	var positions = new Array(); // heatmap positions
-	console.log(e[0].lat + ", " + e[0].lng);
-	console.log(e[5].lat + ", " + e[5].lng);
+
 var markers = [];
 	for(var i = 0; i < e.length; i++){
 

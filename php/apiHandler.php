@@ -9,6 +9,7 @@ function getData($startDate, $endDate) {
         foreach($rawJson as $element) {
             $element = (array)$element;
             $element["agencyType"] = getAgencyForId($element["itemid"]);
+            $element["region"] = getRegionForId($element["itemid"]);
             array_push($data, $element);   
         }
         $currentDate = date("Y-m-d", strtotime($currentDate . "+ 1 day"));
@@ -20,6 +21,16 @@ function getAgencyForId($id) {
     $agencyCodes = getAgencyCodes();
     $agencyChar = $id[3];
     return $agencyCodes[$agencyChar];
+}
+
+function getRegionForId($id) {
+    $regionCodes = getRegionCodes();
+    $regionString = substr($id, 0, 3);
+    $region = $regionCodes[$regionString];
+    if(is_null($region)) {
+        $region = $regionCodes[substr($id, 0, 2)];
+    }
+    return $region;
 }
 
 function getRegionCodes() {
