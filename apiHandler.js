@@ -1,5 +1,5 @@
 var markers = [];
-var infoWindows = [];
+
 function sendGETRequst(url, params, success, error) {
     var index = 0;
     var formatParams = '';
@@ -40,28 +40,32 @@ function parseData(e){
 	var positions = new Array(); // heatmap positions
 
 	for(var i = 0; i < e.length; i++){
-
-		//positions[i] = new google.maps.LatLng( e[i].lat, e[i].lng ); // heatmap positions
-
-          markers[i] = {'marker':new google.maps.Marker({
-            position: new google.maps.LatLng( e[i].lat, e[i].lng ),
-            map: map,
-            title:(String)(e[i].lat + ", " + e[i].lng)
-          }), 'window':null};
-
-	//NEEDS TO CREATE AN INFO WINDOW:
-	//THIS IS HOW WE WILL DISPLAY IMPORTANT DESCRIPTION INFO
-          markers[i].window = new google.maps.InfoWindow({
-            content: (String)('<h1>'+e[i].fulladdress+'</h1><p>'+e[i].event+'</p>')
-          });
-          google.maps.event.addListener(markers[i].marker, 'click', function() {
-            markers[i].window.open(map,markers[i].marker);
-          });
-          markers.push(markers[i]);
-        }
-
-
-var markerCluster = new MarkerClusterer(map, markers.marker);
+		var iconImage = "";
+		if(e.agencyType == "Police")
+		{
+			iconImage="icon_4404.png";
+		}
+		if(e.agencyType == "Fire")
+		{
+			iconImage="icon_2405.png";
+		}
+		if(e.agencyType == "Ambulance")
+		{
+			iconImage="icon_3822.png";
+		}
+		if(e.agencyType == "Traffic")
+		{
+			iconImage="icon_12526.png";
+		}
+		var marker = new google.maps.Marker({
+			position: new google.maps.LatLng( e[i].lat, e[i].lng ),
+			map: map,
+			title:(String)(e[i].lat + ", " + e[i].lng),
+			icon: iconImage
+		  });
+		markers[i] = marker;
+	}
+	var markerCluster = new MarkerClusterer(map, markers);
 
 	//setHeatMap(positions); // heatmap positions
 }
@@ -73,7 +77,7 @@ function handleError(e){
 function getRange(start, end){
 	console.log("getRange");
 	var data = {'start': start, 'end': end};
-	sendGETRequst('http://civicapp.gearchicken.com/dev/getIncidents.php', data, parseData, handleError);
+	sendGETRequst('/civicapp/dev/getIncidents.php', data, parseData, handleError);
 }
 
 window.onload = getRange('2014-02-01', '2014-02-14');
