@@ -12,7 +12,8 @@ function init(){
 	// Create map
 	map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 	// Get & set data
-	getData();
+	//getData();
+	
 }
 
 function setHeatMap(dataPoints){

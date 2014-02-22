@@ -18,21 +18,20 @@ function sendGETRequst(url, params, success, error) {
     var xmlHttp = new XMLHttpRequest();   
     xmlHttp.onreadystatechange=function() {
         if(xmlHttp.readyState === 4) {
-            if(xmlHttp.status === 200){
+            if(xmlHttp.status === 200)
                 success(JSON.parse(xmlHttp.responseText));
-			}
-            else{
-                error(JSON.parse(xmlHttp.responseText));
-			}
         }
-    }
-    
+    }    
     xmlHttp.open("GET", fullUrl, true);
     xmlHttp.send();
 }
 
 function parseData(e){
-	console.log(e);
+	var positions = new Array(); // heatmap positions
+	for(int i = 0; i < e.length; i++){
+		positions = new google.maps.LatLng( e.[i].Lat, e.[i].Lng ); // heatmap positions
+	}
+	setHeatMap(positions); // heatmap positions
 }
 
 function handleError(e){
@@ -41,7 +40,7 @@ function handleError(e){
 
 function getRange(start, end){
 	var data = {'start': start, 'end': end};
-	sendRequest('http://civiapp.gearchicken.com/dev/apiHandler.php', data, parseData, handleError);
+	sendGETRequst('http://civicapp.gearchicken.com/dev/getIncidents.php', data, parseData, handleError);
 }
 
 window.onload = getRange('2014-02-01', '2014-02-03');
