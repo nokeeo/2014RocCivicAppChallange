@@ -1,3 +1,5 @@
+var markers = [];
+var infoWindows = [];
 function sendGETRequst(url, params, success, error) {
     var index = 0;
     var formatParams = '';
@@ -25,35 +27,41 @@ function sendGETRequst(url, params, success, error) {
     xmlHttp.open("GET", fullUrl, true);
     xmlHttp.send();
 }
-
+Array.prototype.marker=function()
+{
+ var output = new [];
+for (i=0;i<this.length;i++)
+  {
+  output.push(this[i].marker);
+  }
+return output;
+}
 function parseData(e){
 	var positions = new Array(); // heatmap positions
 
-var markers = [];
 	for(var i = 0; i < e.length; i++){
 
 		//positions[i] = new google.maps.LatLng( e[i].lat, e[i].lng ); // heatmap positions
 
-var marker = new google.maps.Marker({
-        position: new google.maps.LatLng( e[i].lat, e[i].lng ),
-        map: map,
-        title:(String)(e[i].lat + ", " + e[i].lng)
-      });
-      var infowindow = new google.maps.InfoWindow({
-        content: (String)(e[i].lat + ", " + e[i].lng)
-      });
-      google.maps.event.addListener(marker, 'click', function() {
-        infowindow.open(map,marker);
-      });
-markers.push(marker);
+          markers[i] = {'marker':new google.maps.Marker({
+            position: new google.maps.LatLng( e[i].lat, e[i].lng ),
+            map: map,
+            title:(String)(e[i].lat + ", " + e[i].lng)
+          }), 'window':null};
+
+	//NEEDS TO CREATE AN INFO WINDOW:
+	//THIS IS HOW WE WILL DISPLAY IMPORTANT DESCRIPTION INFO
+          markers[i].window = new google.maps.InfoWindow({
+            content: (String)('<h1>'+e[i].fulladdress+'</h1><p>'+e[i].event+'</p>')
+          });
+          google.maps.event.addListener(markers[i].marker, 'click', function() {
+            markers[i].window.open(map,markers[i].marker);
+          });
+          markers.push(markers[i]);
+        }
 
 
-
-
-	}
-
-
-var markerCluster = new MarkerClusterer(map, markers);
+var markerCluster = new MarkerClusterer(map, markers.marker);
 
 	//setHeatMap(positions); // heatmap positions
 }
