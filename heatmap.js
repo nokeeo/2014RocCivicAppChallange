@@ -7,7 +7,8 @@ function init(){
 	var mapOptions = {
 		zoom: 13,
 		center: new google.maps.LatLng(43.1656, -77.6114),
-		mapTypeId: google.maps.MapTypeId.TERRAIN
+		mapTypeId: google.maps.MapTypeId.TERRAIN,
+        disableDefaultUI: true
 	};
 	// Create map
 	map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
