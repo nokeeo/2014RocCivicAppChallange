@@ -65,18 +65,32 @@ input {
     margin-left: 20px;
 }
 
-#locationBar {
+#searchBar {
     z-index: 10;
+    width: 100%;
     position: absolute;
     top: 125px;
     left: 25px;
+}
+
+#searchBar #searchIcon {
+    height: 35px;
+    width: 35px;
+    position: absolute;
+    top: 2px;
+}
+
+#locationBar {
     height: 35px;
     width: 300px;
+    min-width: 300px;
+    padding-left:40px;
     border: none;
     border: solid 1px #bfbfbf;
     border-radius: 5px;
     font-size: 17px;
     transition: width 1s;
+    -webkit-transition: width 1s;
 }
 
 #locationBar:focus {   
