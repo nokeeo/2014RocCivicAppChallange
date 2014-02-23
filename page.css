@@ -21,13 +21,28 @@ html {
 }
 
 #header {
-    height: 12%;
+    height: 100px;
     width: 100%; 
     margin: 0px;
+    padding-left: 25px;
     z-index: 5;
     position:absolute;
     background-image: -webkit-gradient(
   linear, left top, left bottom, from(rgba(255,255,255,0.9)),
-  to(rgba(255,255,255,0.5)), color-stop(.8,#fffbfb)
+  to(rgba(255,255,255,0.1)), color-stop(.9,#fffbfb)
 );
+}
+
+#headerImage {
+    height: 50px;
+    width: 50px;
+    margin-top: 25px;
+    float: left;
+}
+
+#headerTitle {
+    padding:0px;
+    margin: 0px;
+    margin-top: 30px;
+    margin-left: 60px;
 }
