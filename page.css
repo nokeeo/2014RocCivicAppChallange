@@ -44,5 +44,19 @@ html {
     padding:0px;
     margin: 0px;
     margin-top: 30px;
-    margin-left: 60px;
+    margin-left: 15px;
+    float: left;
+}
+
+#headerMenu {
+    list-style-type: none;
+    float: left;
+    margin-top: 38px;
+}
+
+#headerMenu li {
+    display: inline;
+    margin: 0px;
+    font-size: 20px;
+    margin-left: 20px;
 }
