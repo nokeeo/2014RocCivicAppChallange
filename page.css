@@ -99,3 +99,46 @@ input {
     width: 400px;
     opacity: 1;
 }
+
+@keyframes activityColorChange {
+    0% {background-color: #e83600;}
+    25% {background-color: #f2df00;}
+    50% {background-color: green;}
+    75% {background-color: #0062E3;}
+    100% {background-color: #e83600;}
+}
+
+@-webkit-keyframes activityColorChange {
+    0% {background-color: #e83600;}
+    25% {background-color: #facb04;}
+    50% {background-color: green;}
+    75% {background-color: #0062E3;}
+    100% {background-color: #e83600;}
+}
+
+#activityIndicator {
+    z-index: 7;
+    height: 90%;
+    width: 100%; 
+    position: absolute;
+    bottom: 0px;
+    background-color: rgba(255, 255, 255, 0.85);
+}
+
+#activityIndicatorAnimator {
+    width: 75px;
+    position: absolute;
+    top: 40%;
+    left: 45%;
+    margin: 0px;
+    padding: 0px;
+    background-color: red;
+    border-radius: 5px;
+    animation: activityColorChange 5s infinite alternate;
+    -webkit-animation: activityColorChange 5s infinite ease;
+}
+
+#activityIndicatorAnimator img {
+    height: 100%;
+    width: 100%;
+}

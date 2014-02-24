@@ -1,4 +1,5 @@
 var markers = [];
+var fadeOutObject;
 
 function sendGETRequst(url, params, success, error) {
     var index = 0;
@@ -75,9 +76,21 @@ function handleError(e){
 }
 
 function getRange(start, end){
-	console.log("getRange");
-	var data = {'start': start, 'end': end};
-	sendGETRequst('/civicapp/dev/getIncidents.php', data, parseData, handleError);
+	var params = {'start': start, 'end': end};
+	sendGETRequst('/civicapp/dev/php/getIncidents.php', params, function(response) {
+        parseData(response);
+        fadeOut(document.getElementById('activityIndicator'));
+    }, handleError);
+}
+
+function fadeOut(el) {
+    el.style.transition = 'opacity 1.5s ease';
+    el.style.webkitTransition = 'opacity 1.5s ease';
+    fadeOutObject = el;
+    el.addEventListener('webkitTransitionEnd', function(event) {
+            fadeOutObject.style.display = 'none';   
+        }, false);
+    el.style.opacity = '0';
 }
 
 window.onload = getRange('2014-02-01', '2014-02-14');
