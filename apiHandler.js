@@ -87,9 +87,12 @@ function fadeOut(el) {
     el.style.transition = 'opacity 1.5s ease';
     el.style.webkitTransition = 'opacity 1.5s ease';
     fadeOutObject = el;
-    el.addEventListener('webkitTransitionEnd', function(event) {
-            fadeOutObject.style.display = 'none';   
-        }, false);
+    var fadOutComplete = function(event) {
+        fadeOutObject.style.display = 'none';
+    }
+    el.addEventListener('webkitTransitionEnd', fadOutComplete, false);
+    el.addEventListener('transitionend', fadOutComplete, false);
+    el.addEventListener('oTransitionEnd', fadOutComplete, false);
     el.style.opacity = '0';
 }
 
