@@ -1,5 +1,4 @@
 var markers = [];
-var fadeOutObject;
 
 function sendGETRequst(url, params, success, error) {
     var index = 0;
@@ -86,7 +85,7 @@ function getRange(start, end){
 function fadeOut(el) {
     el.style.transition = 'opacity 1.5s ease';
     el.style.webkitTransition = 'opacity 1.5s ease';
-    fadeOutObject = el;
+    var fadeOutObject = el;
     var fadOutComplete = function(event) {
         fadeOutObject.style.display = 'none';
     }
