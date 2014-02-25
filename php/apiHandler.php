@@ -7,10 +7,14 @@ function getData($startDate, $endDate) {
         $formatURL = "http://mcsafetyfeed.org/api/getgeo.php?date=" . urlencode($apiDateFormat);
         $rawJson = json_decode(file_get_contents($formatURL));
         foreach($rawJson as $element) {
-            $element = (array)$element;
-            $element["agencyType"] = getAgencyForId($element["itemid"]);
-            $element["region"] = getRegionForId($element["itemid"]);
-            array_push($data, $element);   
+        	$element = (array)$element;
+        	$lat = floatval($element["lat"]);
+        	$lng = floatval($element["lng"]);
+        	if(($lat > 40/*43.31116*/ && $lat < 45/*43.354143*/)) {
+            	$element["agencyType"] = getAgencyForId($element["itemid"]);
+            	$element["region"] = getRegionForId($element["itemid"]);
+            	array_push($data, $element);
+            }   
         }
         $currentDate = date("Y-m-d", strtotime($currentDate . "+ 1 day"));
     }

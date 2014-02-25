@@ -27,47 +27,14 @@ function sendGETRequst(url, params, success, error) {
     xmlHttp.open("GET", fullUrl, true);
     xmlHttp.send();
 }
-Array.prototype.marker=function()
-{
- var output = new [];
-for (i=0;i<this.length;i++)
-  {
-  output.push(this[i].marker);
-  }
-return output;
-}
-function parseData(e){
+
+function parseData(data){
 	var positions = new Array(); // heatmap positions
-
-	for(var i = 0; i < e.length; i++){
-		var iconImage = "";
-		if(e.agencyType == "Police")
-		{
-			iconImage="icon_4404.png";
-		}
-		if(e.agencyType == "Fire")
-		{
-			iconImage="icon_2405.png";
-		}
-		if(e.agencyType == "Ambulance")
-		{
-			iconImage="icon_3822.png";
-		}
-		if(e.agencyType == "Traffic")
-		{
-			iconImage="icon_12526.png";
-		}
-		var marker = new google.maps.Marker({
-			position: new google.maps.LatLng( e[i].lat, e[i].lng ),
-			map: map,
-			title:(String)(e[i].lat + ", " + e[i].lng),
-			icon: iconImage
-		  });
-		markers[i] = marker;
+    console.log(data);
+	for(var i = 0; i < data.length; i++){
+		positions[i] = new google.maps.LatLng(data[i]['lat'], data[i]['lng']);
 	}
-	var markerCluster = new MarkerClusterer(map, markers);
-
-	//setHeatMap(positions); // heatmap positions
+	setHeatMap(positions); // heatmap positions
 }
 
 function handleError(e){
@@ -95,4 +62,4 @@ function fadeOut(el) {
     el.style.opacity = '0';
 }
 
-window.onload = getRange('2014-02-01', '2014-02-14');
+window.onload = getRange('2014-02-01', '2014-02-05');
