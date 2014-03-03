@@ -1,5 +1,4 @@
 <?php
-
 define('OFFSET', 268435456);
 define('RADIUS', 85445659.4471); /* $offset / pi() */
     
@@ -41,16 +40,12 @@ function cluster($markers, $distance, $zoom) {
         $cluster = array();
         /* Compare against all markers which are left. */
         foreach ($markers as $key => $target) {
-            $pixels = pixelDistance($marker['lat'], $marker['lon'],
-                                    $target['lat'], $target['lon'],
+            $pixels = pixelDistance($marker['lat'], $marker['lng'],
+                                    $target['lat'], $target['lng'],
                                     $zoom);
             /* If two markers are closer than given distance remove */
             /* target marker from array and add it to cluster.      */
             if ($distance > $pixels) {
-                printf("Distance between %s,%s and %s,%s is %d pixels.\n", 
-                    $marker['lat'], $marker['lon'],
-                    $target['lat'], $target['lon'],
-                    $pixels);
                 unset($markers[$key]);
                 $cluster[] = $target;
             }
@@ -67,5 +62,4 @@ function cluster($markers, $distance, $zoom) {
     }
     return $clustered;
 }
-
 ?>
