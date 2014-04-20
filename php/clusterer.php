@@ -53,7 +53,7 @@ function cluster($markers, $distance, $zoom) {
 
         /* If a marker has been added to cluster, add also the one  */
         /* we were comparing to and remove the original from array. */
-        if (count($cluster) > 0) {
+        if (true/*count($cluster) > 0*/) {
             $cluster[] = $marker;
             $clustered[] = $cluster;
         } else {

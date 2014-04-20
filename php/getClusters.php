@@ -6,7 +6,7 @@
 	$endDate = date("Y-m-d", strtotime($_GET['end']));
 	
 	$data = getData($startDate, $endDate);
-	$clusters = cluster($data, 20, 11);
+	$clusters = cluster($data, 3, 13);
 	
 	header('Content-type: text/json');
 	echo(json_encode($clusters));
