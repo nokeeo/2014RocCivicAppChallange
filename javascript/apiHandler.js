@@ -38,13 +38,12 @@ function sendGETRequst(url, params, success, error, type) {
 
 function parseData(data){
 	var positions = new Array(); // heatmap positions
-	/*for(var i = 0; i < data.length; i++){
-		positions[i] = new google.maps.LatLng(data[i]['lat'], data[i]['lng']);
-	}*/
-    counter = 0;
+    backupStack = new Array();
+    
+    averageCounter = 0;
+    sumPopDensity = 0;
     for(i = 0; i < data.length; i++) {
-        if(data[i].length > 6) {
-            latLng = new google.maps.LatLng(data[i][0]['lat'], data[i][0]['lng']);
+        if(data[i].length > 4) {
             zipCode = '';
             for(k = 0; k < data[i].length; k++) {
                 zipCode = parseZipCode(data[i][k].fulladdress);
@@ -52,17 +51,31 @@ function parseData(data){
                     break;
             }
             
-            weight = .5;
             if(zipCode != '') {
-                console.log(zipPopDensity[zipCode]);
+                averageCounter++;
+                sumPopDensity += zipPopDensity[zipCode];
+                
+                weight = data[i].length / zipPopDensity[zipCode];
+                var weightPoint = {
+                    location : new google.maps.LatLng(data[i][0]['lat'], data[i][0]['lng']),
+                    weight : weight//data[i].length
+                }
+                positions.push(weightPoint);
             }
-            
-            var weightPoint = {
-                location : new google.maps.LatLng(data[i][0]['lat'], data[i][0]['lng']),
-                weight : 1//data[i].length
+            else {
+                backupStack.push(data[i]);   
             }
-            positions.push(weightPoint);
         }
+    }
+    
+    averagePopDensity = sumPopDensity / averageCounter;
+    for(i = 0; i < backupStack.length; i++) {
+        latLng = new google.maps.LatLng(backupStack[i][0]['lat'], data[i][0]['lng']);
+        weightPoint = {
+            location : latLng,
+            weight : data[i].length / averagePopDensity
+        }
+        positions.push(weightPoint);
     }
 	setHeatMap(positions); // heatmap positions
 }
@@ -95,11 +108,14 @@ function fadeOut(el) {
 //Zipcode helper functions
 function parseZipCode(address) {
     addressPieces = address.split(',');
-    stateZip = addressPieces[2].trim().split(' ');
+    
+    stateZip = new Array();
+    if(addressPieces.length > 2) 
+        stateZip = addressPieces[2].trim().split(' ');
     if(stateZip.length > 1)
         return stateZip[1].trim();
-    else
-        return '';
+    
+    return '';
 }
 
 function parseZipCSV(text) {
@@ -140,7 +156,7 @@ function initMap(){
     
     sendGETRequst('/civicapp/data/popDensity.csv', [], function(response) {
         parseZipCSV(response);
-        window.onload = getRange('2014-04-10', '2014-04-24');
+        window.onload = getRange('2014-01-1', '2014-01-7');
     }, handleError, 'txt');
 }
 
