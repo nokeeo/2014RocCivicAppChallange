@@ -1,17 +1,25 @@
 var googleMap;
 var googleGeocoder;
 var heatmapLayer;
+var dataMarkers = [];
 
 var clusters;
 var zipPopDensity = [];
 
+var firstPageLoad = true;
+
 //Hash change function
 window.onhashchange = function() {
+    if(!firstPageLoad) {
+        clearMap();
+    }
     hash = document.URL.substr(document.URL.lastIndexOf('#'));
     if(hash === '#heatmap')
         parseData(clusters);
-    else if(hash === '#markers')
-        clearMap();
+    else if(hash === '#markers') {
+        setMarkers(clusters);
+    }
+    firstPageLoad = false;
 }
 
 function sendGETRequst(url, params, success, error, type) {
@@ -151,6 +159,20 @@ function setHeatMap(dataPoints){
 	heatmapLayer.setMap(googleMap);
 }
 
+function setMarkers(data) {
+    for(i = 0; i < data.length; i++) {
+        for(k = 0; k < data[i].length; k++) {
+            dataPoint = data[i][k];
+            latLng = new google.maps.LatLng(dataPoint['lat'], dataPoint['lng']);
+            var dataMarker = new google.maps.Marker({
+                position: latLng,
+                map: googleMap,
+            });
+            dataMarkers.push(dataMarker);
+        }
+    }
+}
+
 function initMap(){
 	console.log("init");
 	// Set map options
@@ -171,6 +193,11 @@ function initMap(){
 }
 
 function clearMap() {
-    heatmapLayer.setMap(null);
+    if(heatmapLayer)
+        heatmapLayer.setMap(null);
+    
+    for(i = 0; i < dataMarkers.length; i ++) {
+        dataMarkers[i].setMap(null);   
+    }
 }
 google.maps.event.addDomListener(window, 'load', initMap);
