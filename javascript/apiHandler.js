@@ -167,9 +167,19 @@ function setMarkers(data) {
             var dataMarker = new google.maps.Marker({
                 position: latLng,
                 map: googleMap,
+                icon: getCircle(dataPoint),
             });
             dataMarkers.push(dataMarker);
         }
+    }
+}
+
+function getCircle(dataPoint) {
+    return {
+        path: google.maps.SymbolPath.CIRCLE,
+        fillColor: 'red',
+        fillOpacity: .2,
+        scale: 5,
     }
 }
 
