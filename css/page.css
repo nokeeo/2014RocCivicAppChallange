@@ -37,6 +37,11 @@ input {
 );
 }
 
+#header a {
+    text-decoration: none;
+    color: inherit;
+}
+
 #headerImage {
     height: 50px;
     width: 50px;

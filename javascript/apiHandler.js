@@ -1,9 +1,18 @@
-var markers = [];
 var googleMap;
 var googleGeocoder;
-var heatMapLayer;
+var heatmapLayer;
 
+var clusters;
 var zipPopDensity = [];
+
+//Hash change function
+window.onhashchange = function() {
+    hash = document.URL.substr(document.URL.lastIndexOf('#'));
+    if(hash === '#heatmap')
+        parseData(clusters);
+    else if(hash === '#markers')
+        clearMap();
+}
 
 function sendGETRequst(url, params, success, error, type) {
     var index = 0;
@@ -87,8 +96,9 @@ function handleError(e){
 function getRange(start, end){
 	var params = {'start': start, 'end': end};
 	sendGETRequst('/civicapp/php/getClusters.php', params, function(response) {
-        parseData(response);
+        clusters = response;
         fadeOut(document.getElementById('activityIndicator'));
+        window.location.hash = 'heatmap';
     }, handleError, 'json');
 }
 
@@ -160,4 +170,7 @@ function initMap(){
     }, handleError, 'txt');
 }
 
+function clearMap() {
+    heatmapLayer.setMap(null);
+}
 google.maps.event.addDomListener(window, 'load', initMap);
