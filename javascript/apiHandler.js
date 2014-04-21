@@ -1,8 +1,11 @@
 var markers = [];
 var googleMap;
-var heatMapLayer
+var googleGeocoder;
+var heatMapLayer;
 
-function sendGETRequst(url, params, success, error) {
+var zipPopDensity = [];
+
+function sendGETRequst(url, params, success, error, type) {
     var index = 0;
     var formatParams = '';
     for(key in params) {
@@ -23,7 +26,10 @@ function sendGETRequst(url, params, success, error) {
     xmlHttp.onreadystatechange=function() {
         if(xmlHttp.readyState === 4) {
             if(xmlHttp.status === 200)
-                success(JSON.parse(xmlHttp.responseText));
+                if(type === 'json')
+                    success(JSON.parse(xmlHttp.responseText));
+                else if(type === 'txt')
+                    success(xmlHttp.responseText);
         }
     }    
     xmlHttp.open("GET", fullUrl, true);
@@ -32,12 +38,25 @@ function sendGETRequst(url, params, success, error) {
 
 function parseData(data){
 	var positions = new Array(); // heatmap positions
-    console.log(data);
 	/*for(var i = 0; i < data.length; i++){
 		positions[i] = new google.maps.LatLng(data[i]['lat'], data[i]['lng']);
 	}*/
+    counter = 0;
     for(i = 0; i < data.length; i++) {
         if(data[i].length > 6) {
+            latLng = new google.maps.LatLng(data[i][0]['lat'], data[i][0]['lng']);
+            zipCode = '';
+            for(k = 0; k < data[i].length; k++) {
+                zipCode = parseZipCode(data[i][k].fulladdress);
+                if(zipCode != '')
+                    break;
+            }
+            
+            weight = .5;
+            if(zipCode != '') {
+                console.log(zipPopDensity[zipCode]);
+            }
+            
             var weightPoint = {
                 location : new google.maps.LatLng(data[i][0]['lat'], data[i][0]['lng']),
                 weight : 1//data[i].length
@@ -45,7 +64,6 @@ function parseData(data){
             positions.push(weightPoint);
         }
     }
-    console.log(data[i]);
 	setHeatMap(positions); // heatmap positions
 }
 
@@ -58,7 +76,7 @@ function getRange(start, end){
 	sendGETRequst('/civicapp/php/getClusters.php', params, function(response) {
         parseData(response);
         fadeOut(document.getElementById('activityIndicator'));
-    }, handleError);
+    }, handleError, 'json');
 }
 
 function fadeOut(el) {
@@ -72,6 +90,27 @@ function fadeOut(el) {
     el.addEventListener('transitionend', fadOutComplete, false);
     el.addEventListener('oTransitionEnd', fadOutComplete, false);
     el.style.opacity = '0';
+}
+
+//Zipcode helper functions
+function parseZipCode(address) {
+    addressPieces = address.split(',');
+    stateZip = addressPieces[2].trim().split(' ');
+    if(stateZip.length > 1)
+        return stateZip[1].trim();
+    else
+        return '';
+}
+
+function parseZipCSV(text) {
+    lines = text.split('\n');
+    
+    for(i = 0; i < lines.length; i++) {
+        if(lines[i] != '') {
+            cells = lines[i].split(',');
+            zipPopDensity[cells[0]] = cells[3];
+        }
+    }
 }
 
 //Heatmap Functions
@@ -97,7 +136,12 @@ function initMap(){
 	};
 	// Create map
 	googleMap = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+    googleGeocoder = new google.maps.Geocoder();
+    
+    sendGETRequst('/civicapp/data/popDensity.csv', [], function(response) {
+        parseZipCSV(response);
+        window.onload = getRange('2014-04-10', '2014-04-24');
+    }, handleError, 'txt');
 }
 
 google.maps.event.addDomListener(window, 'load', initMap);
-window.onload = getRange('2014-04-10', '2014-04-24');
