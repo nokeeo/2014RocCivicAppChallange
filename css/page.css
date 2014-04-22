@@ -173,6 +173,7 @@ input {
     padding: 0px;
     background-color: red;
     border-radius: 5px;
+    opacity: .7;
     animation: activityColorChange 5s infinite alternate;
     -webkit-animation: activityColorChange 5s infinite ease;
 }

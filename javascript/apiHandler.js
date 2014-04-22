@@ -203,7 +203,7 @@ function getCircle(dataPoint) {
     return {
         path: google.maps.SymbolPath.CIRCLE,
         fillColor: getColorForAgency(dataPoint['agencyType']),
-        fillOpacity: .5,
+        fillOpacity: 1,
         scale: 5,
         strokeColor: 'rgba(186, 186, 186, .5)',
         strokeWeight: 1,
@@ -245,13 +245,13 @@ function clearMap() {
 function getColorForAgency(agency) {
     switch(agency) {
         case 'Police':
-            return 'blue';
+            return '#0062E3';
         case 'Fire':
-            return 'orange';
+            return '#e83600';
         case 'Ambulance':
-            return 'red';
+            return 'green';
         case 'Trafic':
-            return 'yellow';
+            return '#facb04';
         default:
             return 'black';
     }
