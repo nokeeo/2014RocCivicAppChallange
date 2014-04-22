@@ -135,11 +135,37 @@ function toggleMenu() {
     if(!menuShown)
         contentPane.style.right = menuBox.offsetWidth + 'px';
     else
-        contentPane.style.right = '0px'//(contentPane.style.right - menuBox.style.width).toString() + 'px';
+        contentPane.style.right = '0px'
     
+    if(window.location.hash != '#markers')
+        spinMenuImage();
+        
     menuShown = !menuShown; 
 }
 
+function spinMenuImage() {
+    menuImage = document.getElementById('headerMenuButton');
+    
+    if(!menuShown) {
+        menuImage.style.animationName = 'counterSpin';
+        menuImage.style.webkitAnimationName = 'counterSpin';
+    }
+    else {
+        menuImage.style.animationName = 'clockSpin';
+        menuImage.style.webkitAnimationName = 'clockSpin';
+    }
+    menuImage.style.webkitAnimationDuration = '1s';
+    menuImage.style.animationDuration = '1s';
+    
+    menuImage.addEventListener('webkitAnimationEnd', function() {
+       menuImage = document.getElementById('headerMenuButton');
+       menuImage.style.webkitAnimationName = ''; 
+    });
+    menuImage.addEventListener('animationEnd', function() {
+        menuImage = document.getElementById('headerMenuButton');
+        menuImage.style.animationName = '';   
+    });
+}
 //Zipcode helper functions
 function parseZipCode(address) {
     addressPieces = address.split(',');

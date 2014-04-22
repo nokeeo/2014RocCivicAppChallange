@@ -155,6 +155,26 @@ input {
     100% {background-color: #e83600;}
 }
 
+@-moz-keyframes counterSpin { 
+    100% { -moz-transform: rotate(-360deg); } 
+}
+@-webkit-keyframes counterSpin { 
+    100% { -webkit-transform: rotate(-360deg); } 
+}
+@keyframes counterSpin { 100% 
+    { -webkit-transform: rotate(-360deg); transform:rotate(-360deg); } 
+}
+
+@-moz-keyframes clockSpin { 
+    100% { -moz-transform: rotate(360deg); } 
+}
+@-webkit-keyframes clockSpin { 
+    100% { -webkit-transform: rotate(360deg); } 
+}
+@keyframes clockSpin { 100% 
+    { -webkit-transform: rotate(360deg); transform:rotate(360deg); } 
+}
+
 #activityIndicator {
     z-index: 7;
     height: 100%;
