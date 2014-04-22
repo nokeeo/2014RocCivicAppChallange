@@ -9,6 +9,32 @@ body {
     margin:0px;
     font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
     font-weight: 300;
+    overflow: hidden;
+}
+
+#content {
+    width:100%;
+    height: 90%;
+    margin: 0px;
+    z-index: 4;
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    transition: right 1s ease;
+    -webkit-transition: right 1s ease;
+    -moz-transition: right 1s ease;
+    -o-transition: right 1s ease;
+    -ms-transition: right 1s ease;
+    box-shadow: 1px 0px 5px #888888;
+}
+
+#menuBox {
+    width: 25%;
+    height: 90%;
+    margin: 0px;
+    z-index: 0;
+    position: absolute;
+    right: 0px;
 }
 
 input {
@@ -17,11 +43,8 @@ input {
 
 #map-canvas {
 	width: 100%;
-	height: 90%;
+	height: 100%;
     margin : 0px;
-    z-index: 0;
-    position: absolute;
-    bottom: 0px;
 }
 
 #header {
@@ -49,6 +72,15 @@ input {
     float: left;
 }
 
+#headerMenuButton {
+    height: 30px;
+    width: 30px;
+    margin: 0px;
+    position: absolute;
+    right: 50px;
+    top: 35px;
+}
+
 #headerTitle {
     padding:0px;
     margin: 0px;
@@ -74,7 +106,7 @@ input {
     z-index: 5;
     width: 100%;
     position: absolute;
-    top: 125px;
+    top: 25px;
     left: 25px;
 }
 
@@ -123,10 +155,10 @@ input {
 
 #activityIndicator {
     z-index: 7;
-    height: 90%;
+    height: 100%;
     width: 100%; 
     position: absolute;
-    bottom: 0px;
+    top:0px;
     background-color: rgba(255, 255, 255, 0.85);
 }
 

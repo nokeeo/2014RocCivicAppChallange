@@ -10,24 +10,33 @@
 	<script type = "text/javascript" src="./javascript/apiHandler.js"></script>
   </head>
   <body>
+      
       <header id="header">
-        <img src="images/tower.png" id="headerImage" />
-        <h1 id="headerTitle">City Watch</h1>
-        <ul id="headerMenu">
-            <li><a href="#heatmap">Heatmap</a></li>
-            <li><a href="#markers">Markers</a></li>
-            <li>About</li>
-        </ul>
+          <img src="images/tower.png" id="headerImage" />
+          <h1 id="headerTitle">City Watch</h1>
+          <ul id="headerMenu">
+              <li><a href="#heatmap">Heatmap</a></li>
+              <li><a href="#markers">Markers</a></li>
+              <li>About</li>
+          </ul>
+          <img src="images/menu.png" id="headerMenuButton" onclick="toggleMenu()"/>
       </header>
-      <div id="activityIndicator">
-          <div id="activityIndicatorAnimator">
-            <img src="images/towerMask.png" />
-          </div>
-      </div>
-      <div id="searchBar">
-        <img id="searchIcon" src="images/searchIcon.png" />
-        <input type="text" id="locationBar" onchange="locationChanged()">
-      </div>
+      
+      <div id="content">
+        <div id="activityIndicator">
+            <div id="activityIndicatorAnimator">
+                <img src="images/towerMask.png" />
+            </div>
+        </div>
+
+        <div id="searchBar">
+            <img id="searchIcon" src="images/searchIcon.png" />
+            <input type="text" id="locationBar" onchange="locationChanged()">
+        </div>
       <div id="map-canvas"/>
+      </div>
+      
+      <div id="menuBox">
+      </div>
   </body>
 </html>

@@ -2,11 +2,13 @@ var googleMap;
 var googleGeocoder;
 var heatmapLayer;
 var dataMarkers = [];
+var infoWindow;
 
 var clusters;
 var zipPopDensity = [];
 
 var firstPageLoad = true;
+var menuShown = false;
 
 //Hash change function
 window.onhashchange = function() {
@@ -14,8 +16,9 @@ window.onhashchange = function() {
         clearMap();
     }
     hash = document.URL.substr(document.URL.lastIndexOf('#'));
-    if(hash === '#heatmap')
+    if(hash === '#heatmap') {
         parseData(clusters);
+    }
     else if(hash === '#markers') {
         setMarkers(clusters);
     }
@@ -110,6 +113,7 @@ function getRange(start, end){
     }, handleError, 'json');
 }
 
+//Animations
 function fadeOut(el) {
     el.style.transition = 'opacity 1.5s ease';
     el.style.webkitTransition = 'opacity 1.5s ease';
@@ -121,6 +125,19 @@ function fadeOut(el) {
     el.addEventListener('transitionend', fadOutComplete, false);
     el.addEventListener('oTransitionEnd', fadOutComplete, false);
     el.style.opacity = '0';
+}
+
+
+function toggleMenu() {
+    console.log('fire'); 
+    menuBox = document.getElementById('menuBox');
+    contentPane = document.getElementById('content');
+    if(!menuShown)
+        contentPane.style.right = menuBox.offsetWidth + 'px';
+    else
+        contentPane.style.right = '0px'//(contentPane.style.right - menuBox.style.width).toString() + 'px';
+    
+    menuShown = !menuShown; 
 }
 
 //Zipcode helper functions
@@ -169,17 +186,27 @@ function setMarkers(data) {
                 map: googleMap,
                 icon: getCircle(dataPoint),
             });
+            bindInfoWindow(dataMarker, infoWindow, dataPoint['event']);
             dataMarkers.push(dataMarker);
         }
     }
 }
 
-function getCircle(dataPoint) {
+function bindInfoWindow(dataMarker, infoWindow, content) {
+    google.maps.event.addListener(dataMarker, 'click', function() {
+        infoWindow.setContent(content);
+        infoWindow.open(googleMap, dataMarker);
+    });
+}
+
+function getCircle(dataPoint) {   
     return {
         path: google.maps.SymbolPath.CIRCLE,
-        fillColor: 'red',
-        fillOpacity: .2,
+        fillColor: getColorForAgency(dataPoint['agencyType']),
+        fillOpacity: .5,
         scale: 5,
+        strokeColor: 'rgba(186, 186, 186, .5)',
+        strokeWeight: 1,
     }
 }
 
@@ -196,6 +223,10 @@ function initMap(){
 	googleMap = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
     googleGeocoder = new google.maps.Geocoder();
     
+    infoWindow = new google.maps.InfoWindow({
+        content: '', 
+    });
+    
     sendGETRequst('/civicapp/data/popDensity.csv', [], function(response) {
         parseZipCSV(response);
         window.onload = getRange('2014-01-1', '2014-01-7');
@@ -208,6 +239,21 @@ function clearMap() {
     
     for(i = 0; i < dataMarkers.length; i ++) {
         dataMarkers[i].setMap(null);   
+    }
+}
+
+function getColorForAgency(agency) {
+    switch(agency) {
+        case 'Police':
+            return 'blue';
+        case 'Fire':
+            return 'orange';
+        case 'Ambulance':
+            return 'red';
+        case 'Trafic':
+            return 'yellow';
+        default:
+            return 'black';
     }
 }
 google.maps.event.addDomListener(window, 'load', initMap);
