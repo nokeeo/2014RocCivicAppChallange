@@ -13,6 +13,7 @@ function getData($startDate, $endDate) {
         	if(($lat > 40/*43.31116*/ && $lat < 45/*43.354143*/)) {
             	$element["agencyType"] = getAgencyForId($element["itemid"]);
             	$element["region"] = getRegionForId($element["itemid"]);
+                $element["date"] = date("n-j-Y", strtotime($currentDate));
             	array_push($data, $element);
             }   
         }

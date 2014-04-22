@@ -186,14 +186,15 @@ function setMarkers(data) {
                 map: googleMap,
                 icon: getCircle(dataPoint),
             });
-            bindInfoWindow(dataMarker, infoWindow, dataPoint['event']);
+            bindInfoWindow(dataMarker, infoWindow, dataPoint);
             dataMarkers.push(dataMarker);
         }
     }
 }
 
-function bindInfoWindow(dataMarker, infoWindow, content) {
+function bindInfoWindow(dataMarker, infoWindow, dataPoint) {
     google.maps.event.addListener(dataMarker, 'click', function() {
+        content = '<b>' + dataPoint['event'] + '</b><br />' + dataPoint['date'];
         infoWindow.setContent(content);
         infoWindow.open(googleMap, dataMarker);
     });
