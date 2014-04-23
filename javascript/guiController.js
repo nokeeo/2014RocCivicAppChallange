@@ -16,6 +16,7 @@ function toggleAboutMenu() {
             '<h3>Credits</h3>' +
             '<p>Menu by David Vickhoff from The Noun Project</p>' + 
             '<p>Castle by Chris Luders from The Noun Project</p>' +
+            '<p>Information by John Chapman from The Noun Project</p>' +
             '</div>';
     }
     else {
@@ -96,8 +97,8 @@ function spinMenuImage() {
         menuImage.style.animationName = 'clockSpin';
         menuImage.style.webkitAnimationName = 'clockSpin';
     }
-    menuImage.style.webkitAnimationDuration = '1s';
-    menuImage.style.animationDuration = '1s';
+    menuImage.style.webkitAnimationDuration = '.5s';
+    menuImage.style.animationDuration = '.5s';
     
     menuImage.addEventListener('webkitAnimationEnd', function() {
        menuImage = document.getElementById('headerMenuButton');
