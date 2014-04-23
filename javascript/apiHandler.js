@@ -47,7 +47,7 @@ function toggleAboutMenu() {
             aboutPage = document.getElementById('aboutContent');
             aboutPage.parentElement.removeChild(aboutPage);
         });
-        aboutPage.addEventListener('animationEnd', function() {
+        aboutPage.addEventListener('animationend', function() {
             aboutPage = document.getElementById('aboutContent');
             aboutPage.parentElement.removeChild(aboutPage);  
         });
@@ -345,7 +345,12 @@ function initMap(){
     
     sendGETRequst('/civicapp/data/popDensity.csv', [], function(response) {
         parseZipCSV(response);
-        window.onload = getRange('2014-04-16', '2014-04-23');
+        dateEnd = new Date();
+        dateStart = new Date;
+        dateStart.setDate(dateEnd.getDate() - 7);
+        console.log(formatDate(dateStart));
+        console.log(formatDate(dateEnd));
+        window.onload = getRange(formatDate(dateStart), formatDate(dateEnd));
     }, handleError, 'txt');
     
     sendGETRequst('/civicapp/php/getAgencies.php', [], function(response) {
@@ -395,5 +400,19 @@ function buildMenuCheckBox(title) {
         '<label id="' + title + 'CheckboxLabel" style="border-color: ' + getColorForAgency(title) + '" for="' + title + 'checkbox"></label>' + 
         '<p>' + title + '</p>' +
         '</div>';
+}
+
+function formatDate(date) {
+    formatString = date.getFullYear().toString();
+    formatString += '-';
+    
+    month = (date.getMonth()) + 1;
+    if (month < 10) {
+        month = '0' + month.toString();   
+    }
+    formatString += month + '-';
+    formatString += date.getDate().toString();
+    
+    return formatString;
 }
 google.maps.event.addDomListener(window, 'load', initMap);
