@@ -41,6 +41,7 @@ body {
     right: 0px;
     bottom:0px;
     background-color: #f5f5f5;
+    overflow-y: scroll;
 }
 
 #menuBox hr {

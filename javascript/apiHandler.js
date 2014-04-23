@@ -1,6 +1,5 @@
 var clusters;
 var zipPopDensity = [];
-var selectedAgencies = [];
 
 var firstPageLoad = true;
 
@@ -15,7 +14,7 @@ window.onhashchange = function() {
 }
 
 
-function sendGETRequst(url, params, success, error, type) {
+function sendGETRequest(url, params, success, error, type) {
     var index = 0;
     var formatParams = '';
     for(key in params) {
@@ -52,7 +51,7 @@ function getFilteredData(){
         cluster = clusters[i];
         newCluster = new Array();
         for(k = 0; k < cluster.length; k++) {
-            if(selectedAgencies[cluster[k]['agencyType']])
+            if(selectedAgencies[cluster[k]['agencyType']] && selectedRegions[cluster[k]['region']])
                 newCluster.push(cluster[k]);
         }
         
@@ -127,7 +126,7 @@ function handleError(e){
 
 function getRange(start, end){
 	var params = {'start': start, 'end': end};
-	sendGETRequst('/civicapp/php/getClusters.php', params, function(response) {
+	sendGETRequest('/civicapp/php/getClusters.php', params, function(response) {
         clusters = response;
         fadeOut(document.getElementById('activityIndicator'));
         window.location.hash = 'heatmap';

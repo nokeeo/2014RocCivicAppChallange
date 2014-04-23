@@ -78,7 +78,7 @@ function initMap(){
         content: '', 
     });
     
-    sendGETRequst('/civicapp/data/popDensity.csv', [], function(response) {
+    sendGETRequest('/civicapp/data/popDensity.csv', [], function(response) {
         parseZipCSV(response);
         dateEnd = new Date();
         dateStart = new Date;
@@ -88,8 +88,12 @@ function initMap(){
         window.onload = getRange(formatDate(dateStart), formatDate(dateEnd));
     }, handleError, 'txt');
     
-    sendGETRequst('/civicapp/php/getAgencies.php', [], function(response) {
+    sendGETRequest('/civicapp/php/getAgencies.php', [], function(response) {
         menuAddItems(response);
+    }, handleError, 'json');
+    
+    sendGETRequest('/civicapp/php/getRegions.php', [], function(response) {
+        menuAddRegionItems(response);
     }, handleError, 'json');
 }
 

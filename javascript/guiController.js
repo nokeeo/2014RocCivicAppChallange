@@ -1,6 +1,9 @@
 var aboutShown = false;
 var menuShown = false;
 
+var selectedAgencies = [];
+var selectedRegions = [];
+
 function toggleAboutMenu() {
     if(!aboutShown) {
         overlay = document.getElementById('overlay');
@@ -72,6 +75,11 @@ function checkBoxClicked(el) {
         label.style.borderColor = getColorForAgency(agency);
 }
 
+function regionCheckboxClicked(el) {
+    region = el.name;
+    selectedRegions[region] = el.checked;
+}
+
 function applyMenuButtonClicked() {
     data = getFilteredData();
     refreshMapForHash(data);
@@ -113,6 +121,29 @@ function menuAddItems(items) {
     menuBox.innerHTML += appendHTML;
 }
 
+function menuAddRegionItems(items) {
+    menuBox = document.getElementById('menuBox');
+    
+    appendHTML = '<div style="margin:25px;">' +
+        '<h3 style="margin:0px;">Regions</h3>' +
+        '<hr />';
+    for(i = 0; i < items.length; i++) {
+        if(items[i] != '') {
+            appendHTML += buildRegionMenuCheckBox(items[i]);
+            selectedRegions[items[i]] = true;
+        }
+    }
+    menuBox.innerHTML += appendHTML;
+}   
+
+function buildRegionMenuCheckBox(title) {
+    return '<div class="menuCheckbox">' + 
+        '<input type="checkbox" checked="checked" id="' + title + 'checkbox" value="1" name="' + title + '" onClick="regionCheckboxClicked(this)"/>' +
+        '<label id="' + title + 'CheckboxLabel" for="' + title + 'checkbox"></label>' + 
+        '<p>' + title + '</p>' +
+        '</div>';
+}
+    
 function buildMenuCheckBox(title) {
     return '<div class="menuCheckbox">' + 
         '<input type="checkbox" checked="checked" id="' + title + 'checkbox" value="1" name="' + title + '" onClick="checkBoxClicked(this)"/>' +
