@@ -84,10 +84,16 @@ function parseData(data){
 	var positions = new Array(); // heatmap positions
     backupStack = new Array();
     
+    incidentCount = getTotalIncidentCount(data);
+    incidentMult = .0015;
+    console.log(incidentCount);
+    if(incidentCount < 1000)
+        incidentMult = .001;
+    
     averageCounter = 0;
     sumPopDensity = 0;
     for(i = 0; i < data.length; i++) {
-        if(data[i].length > 4) {
+        if(data[i].length > incidentCount * incidentMult) {
             zipCode = '';
             for(k = 0; k < data[i].length; k++) {
                 zipCode = parseZipCode(data[i][k].fulladdress);
@@ -122,6 +128,14 @@ function parseData(data){
         positions.push(weightPoint);
     }
 	setHeatMap(positions); // heatmap positions
+}
+
+function getTotalIncidentCount(data) {
+    count = 0;
+    for(i = 0; i < data.length; i++) {
+        count += data[i].length;  
+    }
+    return count;
 }
 
 function handleError(e){
@@ -290,7 +304,7 @@ function initMap(){
     
     sendGETRequst('/civicapp/data/popDensity.csv', [], function(response) {
         parseZipCSV(response);
-        window.onload = getRange('2014-01-1', '2014-01-7');
+        window.onload = getRange('2014-04-16', '2014-04-23');
     }, handleError, 'txt');
     
     sendGETRequst('/civicapp/php/getAgencies.php', [], function(response) {
