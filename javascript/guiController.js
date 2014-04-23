@@ -83,19 +83,41 @@ function toggleAboutMenu() {
 }
 
 function toggleStatMenu() {
-    agencyMetrics = calcAgencyPercent(getFilteredData());
+    filteredData = getFilteredData();
+    agencyMetrics = calcAgencyPercent(filteredData);
+    zipMetrics = calcZipPercent(filteredData);
     clearPopUp(function() {
-        content = '<div id="aboutContent">' +
+        content = '<div id="aboutContent"><div style="overflow-y: scroll; overflow-x: hidden; width: 100%">' +
+            '<button class="aboutDirectionButton">&#60;</button>' +
+            '<button class="aboutDirectionButton" style="left: 60px;">&#62;</button>' +
             '<button class="aboutExitButton" onclick="clearPopUp(function(){})">X</button>' +
-            '<h3>Stats</h3>';
-        
+            '<h3>Stats</h3>' + 
+            '<table>' +
+            '<tr>' +
+            '<th>Agency</th>' +
+            '<th>Percentage</th>' +
+            '</tr>';
         for(key in agencyMetrics) {
-            metric = agencyMetrics[key] * 100;
-            content += '<p><span style="color: ' + getColorForAgency(key) + '">' + key + '</span> : ' + metric + '</p>';  
+            metric = Math.round(agencyMetrics[key] * 10000) / 100;
+            content += '<tr>' + 
+                '<td class="tableLabel"><span style="color: ' + getColorForAgency(key) + '">' + key + ':</span></td>' + 
+                '<td class="tableValue">' + metric + '%</td>' +
+                '</tr>';  
         }
         
-        content += '</div>';
-        
+        content += '</table><table>' +
+            '<tr>' +
+            '<th>ZIP Code</th>' +
+            '<th>Percentage</th>' +
+            '</tr>';
+        for(key in zipMetrics) {
+            metric = Math.round(zipMetrics[key] * 1000) / 1000;
+            content += '<tr>' + 
+                '<td class="tableLabel">' + key + ':</td>' + 
+                '<td class="tableValue">' + metric + '%</td>' +
+                '</tr>';  
+        }
+        content += '</table></div></div>';
         togglePopUp(content);
     });
 }
