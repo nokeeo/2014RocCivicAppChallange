@@ -6,6 +6,7 @@ var infoWindow;
 
 var clusters;
 var zipPopDensity = [];
+var selectedAgencies = [];
 
 var firstPageLoad = true;
 var menuShown = false;
@@ -54,6 +55,16 @@ function sendGETRequst(url, params, success, error, type) {
     }    
     xmlHttp.open("GET", fullUrl, true);
     xmlHttp.send();
+}
+
+function refreshMapForHash(refreshData) {
+    clearMap();
+    if(hash === '#heatmap') {
+        parseData(refreshData);
+    }
+    else if(hash === '#markers') {
+        setMarkers(refreshData);
+    }
 }
 
 function parseData(data){
@@ -141,6 +152,28 @@ function toggleMenu() {
         spinMenuImage();
         
     menuShown = !menuShown; 
+}
+
+function checkBoxClicked(el) {
+    agency = el.name;
+    selectedAgencies[agency] = el.checked;
+}
+
+function applyMenuButtonClicked() {
+    data = new Array();
+    for(i = 0; i < clusters.length; i++) {
+        cluster = clusters[i];
+        newCluster = new Array();
+        for(k = 0; k < cluster.length; k++) {
+            if(selectedAgencies[cluster[k]['agencyType']])
+                newCluster.push(cluster[k]);
+        }
+        
+        if(newCluster.length > 0)
+            data.push(newCluster);
+    }
+    
+    refreshMapForHash(data);
 }
 
 function spinMenuImage() {
@@ -294,6 +327,7 @@ function menuAddItems(items) {
     appendHTML = '<form style="margin: 25px;">';
     for(i = 0; i < items.length; i++) {
         appendHTML += buildMenuCheckBox(items[i]);
+        selectedAgencies[items[i]] = true;
     }
     appendHTML += '</form>';
     menuBox.innerHTML += appendHTML;
@@ -301,9 +335,9 @@ function menuAddItems(items) {
 
 function buildMenuCheckBox(title) {
     return '<div class="menuCheckbox">' + 
-        '<input type="checkbox" id="' + title + 'checkbox" value="1" name="' + title + '" />' +
-        '<label for="' + title + 'checkbox"></label>' + 
-        '</div>' + 
-        '<p style="position: relative; left: 15px;">' + title + '</p>';
+        '<input type="checkbox" checked="checked" id="' + title + 'checkbox" value="1" name="' + title + '" onClick="checkBoxClicked(this)"/>' +
+        '<label style="border-color: ' + getColorForAgency(title) + '" for="' + title + 'checkbox"></label>' + 
+        '<p>' + title + '</p>' +
+        '</div>';
 }
 google.maps.event.addDomListener(window, 'load', initMap);

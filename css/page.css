@@ -39,6 +39,12 @@ body {
     background-color: #f5f5f5;
 }
 
+#menuBox hr {
+    display: block; height: 1px;
+    border: 0; border-top: 1px solid #ccc;
+    margin: 1em 0; padding: 0;   
+}
+
 input {
  font-family: inherit;
 }
@@ -205,12 +211,14 @@ input {
 
 input[type=checkbox] {
 	visibility: hidden;
+    float:left;
 }
 
 .menuCheckbox {
-    width: 25px;
+    width: 100%;
     position: relative;
     float:left;
+    margin-bottom: 25px;
 }
 
 .menuCheckbox label {
@@ -223,6 +231,7 @@ input[type=checkbox] {
 	background: #eee;
 	border:1px solid #ddd;
     border-radius: 3px;
+    float: left;   
 }
 
 .menuCheckbox label:after {
@@ -245,10 +254,32 @@ input[type=checkbox] {
 	transform: rotate(-45deg);
 }
 
+.menuCheckbox p {
+    float: left;
+    margin: 5px 45px;
+}
+
 .menuCheckbox label:hover::after {
 	opacity: 0.5;
 }
 
 .menuCheckbox input[type=checkbox]:checked + label:after {
 	opacity: 1;
+}
+
+.menuApplyButton {
+    height: 30px;
+	position: absolute;
+    top: 15px;
+    right: 15px;
+	background: #eee;
+	border:1px solid #ddd;
+    font-weight: bold;
+    border-radius: 3px; 
+    outline: none;
+}
+
+.menuApplyButton:enabled:active {
+    box-shadow: inset 0 2px 2px -1px rgba(0,0,0,0.13);
+    border-color: #d1d1d1; 
 }
