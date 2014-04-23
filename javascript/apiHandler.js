@@ -68,7 +68,6 @@ function parseData(data){
     
     incidentCount = getTotalIncidentCount(data);
     incidentMult = .0015;
-    console.log(incidentCount);
     if(incidentCount < 1000)
         incidentMult = .001;
     
@@ -128,6 +127,7 @@ function getRange(start, end){
 	var params = {'start': start, 'end': end};
 	sendGETRequest('/civicapp/php/getClusters.php', params, function(response) {
         clusters = response;
+        console.log(calcZipPercent(clusters));
         fadeOut(document.getElementById('activityIndicator'));
         window.location.hash = 'heatmap';
     }, handleError, 'json');
@@ -169,4 +169,61 @@ function formatDate(date) {
     formatString += date.getDate().toString();
     
     return formatString;
+}
+
+function calcAgencyPercent(data) {
+    agencySums = [];
+    sum = 0;
+    for(i = 0; i < data.length; i++) {
+        cluster = data[i];
+        for(k = 0; k < cluster.length; k++) {
+            agency = cluster[k]['agencyType'];
+            
+            if(agencySums[agency])
+                agencySums[agency] = agencySums[agency] + 1;   
+            else
+                agencySums[agency] = 1;
+            
+            sum++;
+        }
+    }
+    
+    agencyStats = [];
+    for(key in agencySums) {
+        if(sum > 0) {
+            agencySum = agencySums[key];
+            agencyStats[key] = agencySum / sum;
+        }
+        else
+            agencyStats[key] = 0;
+    }
+    return agencyStats;
+}
+
+function calcZipPercent(data) {
+    sum = 0;
+    zipSums = [];
+    for(i = 0; i< data.length; i++) {
+        cluster = data[i];
+        for(k = 0; k < cluster.length; k++) {
+            zip = parseZipCode(cluster[k].fulladdress);
+            if(zip != '') {
+                if(zipSums[zip])
+                    zipSums[zip] = zipSums[zip] + 1;
+                else
+                    zipSums[zip] = 1;
+                sum++;
+            }
+        }
+    }
+    
+    zipStats = [];
+    for(key in zipSums) {
+        if(sum > 0)
+            zipStats[key] = zipSums[key] / sum; 
+        else
+            zipStats[key] = 0;
+    }
+    
+    return zipStats;
 }

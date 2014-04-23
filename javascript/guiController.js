@@ -5,51 +5,81 @@ var aboutAnimating = false;
 var selectedAgencies = [];
 var selectedRegions = [];
 
-function toggleAboutMenu() {
+function clearPopUp(animationComplete) {
+    aboutPage = document.getElementById('aboutContent');
+    
+    aboutAnimating = true;
+    if(aboutPage) {
+        aboutPage.style.animationName = 'aboutOut';
+        aboutPage.style.webkitAnimationName = 'aboutOut';
+        aboutPage.style.animationDuration = '1.5s';
+        aboutPage.style.webkitAnimationDuration = '1.5s';
+
+        aboutPage.addEventListener('webkitAnimationEnd', function() {
+            aboutPage = document.getElementById('aboutContent');
+            aboutPage.parentElement.removeChild(aboutPage);
+            aboutAnimating = false;
+            animationComplete();
+        });
+
+        aboutPage.addEventListener('animationend', function() {
+            aboutPage = document.getElementById('aboutContent');
+            aboutPage.parentElement.removeChild(aboutPage); 
+            aboutAnimating = false;
+            animationComplete();
+        });
+    }
+    else {
+        animationComplete();
+        aboutAnimating = false;
+    }
+}
+
+function showPopUp(content, animationComplete) {
+    overlay = document.getElementById('overlay');
+    overlay.innerHTML += content;
+    aboutPage = document.getElementById('aboutContent');
+    aboutPage.addEventListener('webkitAnimationEnd', function() {
+        aboutAnimating = false;
+        animationComplete();
+    });
+    aboutPage.addEventListener('animationend', function() {
+        aboutAnimating = false;
+        animationComplete();
+    });
+}
+
+function togglePopUp() {
     if(!aboutAnimating) {
         aboutAnimating = true;
         if(!aboutShown) {
-            overlay = document.getElementById('overlay');
-            overlay.innerHTML += '<div id="aboutContent">' +
-                '<button class="aboutExitButton" onclick="toggleAboutMenu()">X</button>' +
-                '<h3>About</h3>' +
-                '<p>City Watch is an application that plots all the 911 calls made in Monroe County. When generating the heatmap the population density is considered. You can filter the results by clicking the menu button in the right corner.</p>' +
-                '<h3>Developers</h3>' +
-                '<p>Eric Lee</p>' +
-                '<p>Liam Middlebrook</p>' +
-                '<h3>Credits</h3>' +
-                '<p>Menu by David Vickhoff from The Noun Project</p>' + 
-                '<p>Castle by Chris Luders from The Noun Project</p>' +
-                '<p>Information by John Chapman from The Noun Project</p>' +
-                '</div>';
-            aboutPage = document.getElementById('aboutContent');
-            aboutPage.addEventListener('webkitAnimationEnd', function() {
-               aboutAnimating = false; 
-            });
-            aboutPage.addEventListener('animationend', function() {
-               aboutAnimating = false; 
-            });
+            showPopUp(content,function() {});
         }
-        else {
-            aboutPage = document.getElementById('aboutContent');
-            aboutPage.style.animationName = 'aboutOut';
-            aboutPage.style.webkitAnimationName = 'aboutOut';
-            aboutPage.style.animationDuration = '1.5s';
-            aboutPage.style.webkitAnimationDuration = '1.5s';
-
-            aboutPage.addEventListener('webkitAnimationEnd', function() {
-                aboutPage = document.getElementById('aboutContent');
-                aboutPage.parentElement.removeChild(aboutPage);
-                aboutAnimating = false;
-            });
-            aboutPage.addEventListener('animationend', function() {
-                aboutPage = document.getElementById('aboutContent');
-                aboutPage.parentElement.removeChild(aboutPage); 
-                aboutAnimating = false;
-            });
-        }
-        aboutShown = !aboutShown;
+        aboutAnimating = false;
     }
+    aboutShown = !aboutShown;
+}
+
+function toggleAboutMenu() {
+    clearPopUp(function(){});
+    
+    content = '<div id="aboutContent">' +
+        '<button class="aboutExitButton" onclick="toggleAboutMenu()">X</button>' +
+        '<h3>About</h3>' +
+        '<p>City Watch is an application that plots all the 911 calls made in Monroe County. When generating the heatmap the population density is considered. You can filter the results by clicking the menu button in the right corner.</p>' +
+        '<h3>Developers</h3>' +
+        '<p>Eric Lee</p>' +
+        '<p>Liam Middlebrook</p>' +
+        '<h3>Credits</h3>' +
+        '<p>Menu by David Vickhoff from The Noun Project</p>' + 
+        '<p>Castle by Chris Luders from The Noun Project</p>' +
+        '<p>Information by John Chapman from The Noun Project</p>' +
+        '</div>';
+    togglePopUp(content);
+}
+
+function toggleStatMenu() {
+    console.log('fire');   
 }
 
 function fadeOut(el) {
