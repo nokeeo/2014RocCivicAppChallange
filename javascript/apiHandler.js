@@ -25,7 +25,16 @@ window.onhashchange = function() {
 function toggleAboutMenu() {
     if(!aboutShown) {
         overlay = document.getElementById('overlay');
-        overlay.innerHTML += '<div id="aboutContent"></div>';
+        overlay.innerHTML += '<div id="aboutContent">' +
+            '<h3>About</h3>' +
+            '<p>City Watch is an application that plots all the 911 calls made in Monroe County. When generating the heatmap the population density is considered. You can filter the results by clicking the menu button in the right corner.</p>' +
+            '<h3>Developers</h3>' +
+            '<p>Eric Lee</p>' +
+            '<p>Liam Middlebrook</p>' +
+            '<h3>Credits</h3>' +
+            '<p>Menu by David Vickhoff from The Noun Project</p>' + 
+            '<p>Castle by Chris Luders from The Noun Project</p>' +
+            '</div>';
     }
     else {
         aboutPage = document.getElementById('aboutContent');
