@@ -247,7 +247,6 @@ function parseZipCSV(text) {
 //Heatmap Functions
 
 function setHeatMap(dataPoints){
-	console.log("set");
 	var points  = new google.maps.MVCArray(dataPoints);
 	heatmapLayer = new google.maps.visualization.HeatmapLayer({ data: points });
     heatmapLayer.set('radius', 1);
@@ -294,11 +293,13 @@ function getCircle(dataPoint) {
 function initMap(){
 	console.log("init");
 	// Set map options
+    console.log(googleMapStyles);
 	var mapOptions = {
 		zoom: 13,
 		center: new google.maps.LatLng(43.1656, -77.6114),
-		mapTypeId: google.maps.MapTypeId.TERRAIN,
-        disableDefaultUI: true
+		mapTypeId: google.maps.MapTypeId.ROADMAP,
+        disableDefaultUI: true,
+        styles: googleMapStyles
 	};
 	// Create map
 	googleMap = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
