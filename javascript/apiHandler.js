@@ -258,6 +258,10 @@ function initMap(){
         parseZipCSV(response);
         window.onload = getRange('2014-01-1', '2014-01-7');
     }, handleError, 'txt');
+    
+    sendGETRequst('/civicapp/php/getAgencies.php', [], function(response) {
+        menuAddItems(response);
+    }, handleError, 'json');
 }
 
 function clearMap() {
@@ -282,5 +286,24 @@ function getColorForAgency(agency) {
         default:
             return 'black';
     }
+}
+
+function menuAddItems(items) {
+    menuBox = document.getElementById('menuBox');
+    
+    appendHTML = '<form style="margin: 25px;">';
+    for(i = 0; i < items.length; i++) {
+        appendHTML += buildMenuCheckBox(items[i]);
+    }
+    appendHTML += '</form>';
+    menuBox.innerHTML += appendHTML;
+}
+
+function buildMenuCheckBox(title) {
+    return '<div class="menuCheckbox">' + 
+        '<input type="checkbox" id="' + title + 'checkbox" value="1" name="' + title + '" />' +
+        '<label for="' + title + 'checkbox"></label>' + 
+        '</div>' + 
+        '<p style="position: relative; left: 15px;">' + title + '</p>';
 }
 google.maps.event.addDomListener(window, 'load', initMap);

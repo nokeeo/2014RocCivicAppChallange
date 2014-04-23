@@ -202,3 +202,53 @@ input {
     height: 100%;
     width: 100%;
 }
+
+input[type=checkbox] {
+	visibility: hidden;
+}
+
+.menuCheckbox {
+    width: 25px;
+    position: relative;
+    float:left;
+}
+
+.menuCheckbox label {
+    cursor: pointer;
+	position: absolute;
+	width: 25px;
+	height: 25px;
+	top: 0;
+  	left: 0;
+	background: #eee;
+	border:1px solid #ddd;
+    border-radius: 3px;
+}
+
+.menuCheckbox label:after {
+	opacity: 0.2;
+	content: '';
+	position: absolute;
+	width: 9px;
+	height: 5px;
+	background: transparent;
+	top: 6px;
+	left: 7px;
+	border: 3px solid #333;
+	border-top: none;
+	border-right: none;
+
+	-webkit-transform: rotate(-45deg);
+	-moz-transform: rotate(-45deg);
+	-o-transform: rotate(-45deg);
+	-ms-transform: rotate(-45deg);
+	transform: rotate(-45deg);
+}
+
+.menuCheckbox label:hover::after {
+	opacity: 0.5;
+}
+
+.menuCheckbox input[type=checkbox]:checked + label:after {
+	opacity: 1;
+}
