@@ -19,6 +19,7 @@ function clearPopUp(animationComplete) {
             aboutPage = document.getElementById('aboutContent');
             aboutPage.parentElement.removeChild(aboutPage);
             aboutAnimating = false;
+            aboutShown = false;
             animationComplete();
         });
 
@@ -26,12 +27,14 @@ function clearPopUp(animationComplete) {
             aboutPage = document.getElementById('aboutContent');
             aboutPage.parentElement.removeChild(aboutPage); 
             aboutAnimating = false;
+            aboutShown = false;
             animationComplete();
         });
     }
     else {
-        animationComplete();
         aboutAnimating = false;
+        aboutShown = false;
+        animationComplete();
     }
 }
 
@@ -41,10 +44,12 @@ function showPopUp(content, animationComplete) {
     aboutPage = document.getElementById('aboutContent');
     aboutPage.addEventListener('webkitAnimationEnd', function() {
         aboutAnimating = false;
+        aboutShown = true;
         animationComplete();
     });
     aboutPage.addEventListener('animationend', function() {
         aboutAnimating = false;
+        aboutShown = true;
         animationComplete();
     });
 }
@@ -55,16 +60,13 @@ function togglePopUp() {
         if(!aboutShown) {
             showPopUp(content,function() {});
         }
-        aboutAnimating = false;
     }
-    aboutShown = !aboutShown;
 }
 
 function toggleAboutMenu() {
-    clearPopUp(function(){});
-    
-    content = '<div id="aboutContent">' +
-        '<button class="aboutExitButton" onclick="toggleAboutMenu()">X</button>' +
+    clearPopUp(function(){
+        content = '<div id="aboutContent">' +
+        '<button class="aboutExitButton" onclick="clearPopUp(function(){})">X</button>' +
         '<h3>About</h3>' +
         '<p>City Watch is an application that plots all the 911 calls made in Monroe County. When generating the heatmap the population density is considered. You can filter the results by clicking the menu button in the right corner.</p>' +
         '<h3>Developers</h3>' +
@@ -74,12 +76,28 @@ function toggleAboutMenu() {
         '<p>Menu by David Vickhoff from The Noun Project</p>' + 
         '<p>Castle by Chris Luders from The Noun Project</p>' +
         '<p>Information by John Chapman from The Noun Project</p>' +
+        '<p>Statistics by Convoy from The Noun Project</p>' +
         '</div>';
-    togglePopUp(content);
+        togglePopUp(content);
+    });
 }
 
 function toggleStatMenu() {
-    console.log('fire');   
+    agencyMetrics = calcAgencyPercent(getFilteredData());
+    clearPopUp(function() {
+        content = '<div id="aboutContent">' +
+            '<button class="aboutExitButton" onclick="clearPopUp(function(){})">X</button>' +
+            '<h3>Stats</h3>';
+        
+        for(key in agencyMetrics) {
+            metric = agencyMetrics[key] * 100;
+            content += '<p><span style="color: ' + getColorForAgency(key) + '">' + key + '</span> : ' + metric + '</p>';  
+        }
+        
+        content += '</div>';
+        
+        togglePopUp(content);
+    });
 }
 
 function fadeOut(el) {
