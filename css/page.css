@@ -273,16 +273,19 @@ input[type=checkbox] {
 	opacity: 1;
 }
 
-.menuApplyButton {
+button {
     height: 30px;
-	position: absolute;
-    top: 15px;
-    right: 15px;
 	background: #eee;
 	border:1px solid #ddd;
     font-weight: bold;
     border-radius: 3px; 
     outline: none;
+}
+
+.menuApplyButton {
+    position: absolute;
+    top: 15px;
+    right: 15px;
 }
 
 .menuApplyButton:enabled:active {
@@ -308,6 +311,8 @@ input[type=checkbox] {
     
     text-align:center;
     
+    overflow-y: scroll;
+    
     -webkit-animation-name: aboutIn;
 	   -moz-animation-name: aboutIn;
 	    -ms-animation-name: aboutIn;
@@ -320,6 +325,12 @@ input[type=checkbox] {
 	        animation-duration: 1.25s;
     
     z-index: 10;
+}
+
+.aboutExitButton {
+    position: absolute;
+    right: 15px;
+    top: 15px;
 }
 
 @-webkit-keyframes aboutIn {
