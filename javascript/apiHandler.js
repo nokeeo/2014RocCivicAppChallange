@@ -10,6 +10,7 @@ var selectedAgencies = [];
 
 var firstPageLoad = true;
 var menuShown = false;
+var aboutShown = false;
 
 //Hash change function
 window.onhashchange = function() {
@@ -17,9 +18,32 @@ window.onhashchange = function() {
     if(!firstPageLoad) {
         clearMap();
     }
-    hash = document.URL.substr(document.URL.lastIndexOf('#'));
     refreshMapForHash(data);
     firstPageLoad = false;
+}
+
+function toggleAboutMenu() {
+    if(!aboutShown) {
+        overlay = document.getElementById('overlay');
+        overlay.innerHTML += '<div id="aboutContent"></div>';
+    }
+    else {
+        aboutPage = document.getElementById('aboutContent');
+        aboutPage.style.animationName = 'aboutOut';
+        aboutPage.style.webkitAnimationName = 'aboutOut';
+        aboutPage.style.animationDuration = '1.5s';
+        aboutPage.style.webkitAnimationDuration = '1.5s';
+        
+        aboutPage.addEventListener('webkitAnimationEnd', function() {
+            aboutPage = document.getElementById('aboutContent');
+            aboutPage.parentElement.removeChild(aboutPage);
+        });
+        aboutPage.addEventListener('animationEnd', function() {
+            aboutPage = document.getElementById('aboutContent');
+            aboutPage.parentElement.removeChild(aboutPage);  
+        });
+    }
+    aboutShown = !aboutShown;
 }
 
 function sendGETRequst(url, params, success, error, type) {
@@ -55,6 +79,7 @@ function sendGETRequst(url, params, success, error, type) {
 
 function refreshMapForHash(refreshData) {
     clearMap();
+    hash = window.location.hash;
     if(hash === '#heatmap') {
         parseData(refreshData);
     }
