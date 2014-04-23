@@ -90,10 +90,9 @@ function initMap(){
     
     sendGETRequest('/civicapp/php/getAgencies.php', [], function(response) {
         menuAddItems(response);
-    }, handleError, 'json');
-    
-    sendGETRequest('/civicapp/php/getRegions.php', [], function(response) {
-        menuAddRegionItems(response);
+        sendGETRequest('/civicapp/php/getRegions.php', [], function(response) {
+            menuAddRegionItems(response);
+        }, handleError, 'json');
     }, handleError, 'json');
 }
 
