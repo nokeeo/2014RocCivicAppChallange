@@ -13,16 +13,12 @@ var menuShown = false;
 
 //Hash change function
 window.onhashchange = function() {
+    data = getFilteredData();
     if(!firstPageLoad) {
         clearMap();
     }
     hash = document.URL.substr(document.URL.lastIndexOf('#'));
-    if(hash === '#heatmap') {
-        parseData(clusters);
-    }
-    else if(hash === '#markers') {
-        setMarkers(clusters);
-    }
+    refreshMapForHash(data);
     firstPageLoad = false;
 }
 
@@ -65,6 +61,23 @@ function refreshMapForHash(refreshData) {
     else if(hash === '#markers') {
         setMarkers(refreshData);
     }
+}
+
+function getFilteredData(){
+    data = new Array();
+    for(i = 0; i < clusters.length; i++) {
+        cluster = clusters[i];
+        newCluster = new Array();
+        for(k = 0; k < cluster.length; k++) {
+            if(selectedAgencies[cluster[k]['agencyType']])
+                newCluster.push(cluster[k]);
+        }
+        
+        if(newCluster.length > 0)
+            data.push(newCluster);
+    }
+    
+    return data; 
 }
 
 function parseData(data){
@@ -160,19 +173,7 @@ function checkBoxClicked(el) {
 }
 
 function applyMenuButtonClicked() {
-    data = new Array();
-    for(i = 0; i < clusters.length; i++) {
-        cluster = clusters[i];
-        newCluster = new Array();
-        for(k = 0; k < cluster.length; k++) {
-            if(selectedAgencies[cluster[k]['agencyType']])
-                newCluster.push(cluster[k]);
-        }
-        
-        if(newCluster.length > 0)
-            data.push(newCluster);
-    }
-    
+    data = getFilteredData();
     refreshMapForHash(data);
 }
 
