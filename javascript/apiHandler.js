@@ -184,6 +184,12 @@ function toggleMenu() {
 function checkBoxClicked(el) {
     agency = el.name;
     selectedAgencies[agency] = el.checked;
+    
+    label = document.getElementById(agency + 'CheckboxLabel');
+    if(!el.checked)
+        label.style.borderColor = '#ddd';
+    else
+        label.style.borderColor = getColorForAgency(agency);
 }
 
 function applyMenuButtonClicked() {
@@ -351,7 +357,7 @@ function menuAddItems(items) {
 function buildMenuCheckBox(title) {
     return '<div class="menuCheckbox">' + 
         '<input type="checkbox" checked="checked" id="' + title + 'checkbox" value="1" name="' + title + '" onClick="checkBoxClicked(this)"/>' +
-        '<label style="border-color: ' + getColorForAgency(title) + '" for="' + title + 'checkbox"></label>' + 
+        '<label id="' + title + 'CheckboxLabel" style="border-color: ' + getColorForAgency(title) + '" for="' + title + 'checkbox"></label>' + 
         '<p>' + title + '</p>' +
         '</div>';
 }
