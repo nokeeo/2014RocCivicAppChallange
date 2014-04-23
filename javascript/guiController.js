@@ -5,6 +5,9 @@ var aboutAnimating = false;
 var selectedAgencies = [];
 var selectedRegions = [];
 
+var statSlideIndex = 0;
+var statSlideMaxIndex = 1;
+
 function clearPopUp(animationComplete) {
     aboutPage = document.getElementById('aboutContent');
     
@@ -83,41 +86,14 @@ function toggleAboutMenu() {
 }
 
 function toggleStatMenu() {
-    filteredData = getFilteredData();
-    agencyMetrics = calcAgencyPercent(filteredData);
-    zipMetrics = calcZipPercent(filteredData);
     clearPopUp(function() {
-        content = '<div id="aboutContent"><div style="overflow-y: scroll; overflow-x: hidden; width: 100%">' +
-            '<button class="aboutDirectionButton">&#60;</button>' +
-            '<button class="aboutDirectionButton" style="left: 60px;">&#62;</button>' +
+        content = '<div id="aboutContent">' +
+            '<button class="aboutDirectionButton" onclick="statReverseClicked()">&#60;</button>' +
+            '<button class="aboutDirectionButton" style="left: 60px;" onclick="statForwardClicked()">&#62;</button>' +
             '<button class="aboutExitButton" onclick="clearPopUp(function(){})">X</button>' +
-            '<h3>Stats</h3>' + 
-            '<table>' +
-            '<tr>' +
-            '<th>Agency</th>' +
-            '<th>Percentage</th>' +
-            '</tr>';
-        for(key in agencyMetrics) {
-            metric = Math.round(agencyMetrics[key] * 10000) / 100;
-            content += '<tr>' + 
-                '<td class="tableLabel"><span style="color: ' + getColorForAgency(key) + '">' + key + ':</span></td>' + 
-                '<td class="tableValue">' + metric + '%</td>' +
-                '</tr>';  
-        }
-        
-        content += '</table><table>' +
-            '<tr>' +
-            '<th>ZIP Code</th>' +
-            '<th>Percentage</th>' +
-            '</tr>';
-        for(key in zipMetrics) {
-            metric = Math.round(zipMetrics[key] * 1000) / 1000;
-            content += '<tr>' + 
-                '<td class="tableLabel">' + key + ':</td>' + 
-                '<td class="tableValue">' + metric + '%</td>' +
-                '</tr>';  
-        }
-        content += '</table></div></div>';
+            '<h3>Stats</h3>' +
+            getStatContent(statSlideIndex) +
+            '</div>';
         togglePopUp(content);
     });
 }
@@ -147,6 +123,32 @@ function toggleMenu() {
         spinMenuImage();
         
     menuShown = !menuShown; 
+}
+
+function addSlideWithContent(content) {
+    statSlide = document.getElementById('statSlide');
+    parent = statSlide.parentElement;
+    parent.removeChild(statSlide);
+    
+    parent.innerHTML += content;
+}
+
+function statReverseClicked() {
+    console.log(statSlideIndex);
+    if(statSlideIndex > 0) {
+        statSlideIndex--;
+        content = getStatContent(statSlideIndex);
+        addSlideWithContent(content); 
+    }
+}
+
+function statForwardClicked() {
+    console.log(statSlideIndex);
+    if(statSlideIndex < statSlideMaxIndex) {
+        statSlideIndex++;   
+        content = getStatContent(statSlideIndex);
+        addSlideWithContent(content);
+    }
 }
 
 function checkBoxClicked(el) {
@@ -250,4 +252,47 @@ function getColorForAgency(agency) {
         default:
             return 'black';
     }
+}
+
+function getStatContent(index) {
+    content = '';
+    filteredData = getFilteredData();
+    if(index == 0) {
+        agencyMetrics = calcAgencyPercent(filteredData);
+        content = '<div id="statSlide" style="width:100%">' + 
+                '<table>' +
+                '<tr>' +
+                '<th>Agency</th>' +
+                '<th>Percentage</th>' +
+                '</tr>';
+            for(key in agencyMetrics) {
+                metric = Math.round(agencyMetrics[key] * 10000) / 100;
+                content += '<tr>' + 
+                    '<td class="tableLabel"><span style="color: ' + getColorForAgency(key) + '">' + key + ':</span></td>' + 
+                    '<td class="tableValue">' + metric + '%</td>' +
+                    '</tr>';  
+            }
+
+            content += '</table></div>';
+    }
+    
+    else if(index == 1) {
+        zipMetrics = calcZipPercent(filteredData);
+        content += '<div id="statSlide" style="width: 100%">' +
+            '<table>' +
+            '<tr>' +
+            '<th>ZIP Code</th>'+
+            '<th>Percentage</th>' +
+            '</tr>';
+        for(key in zipMetrics) {
+            metric = Math.round(zipMetrics[key] * 10000) / 10000;
+            content += '<tr>' +
+                '<td class="tableLabel">' + key + '</td>' +
+                '<td class="tableValue">' + metric + '</td>' +
+                '</tr>';
+        }
+        
+        content += '</table></div>';
+    }
+    return content;
 }
