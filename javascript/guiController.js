@@ -68,11 +68,13 @@ function toggleAboutMenu() {
             content = '<div id="aboutContent">' +
             '<button class="aboutExitButton" onclick="exitAboutButtonClicked()">X</button>' +
             '<h3>About</h3>' +
-            '<p>City Watch is an application that plots all the 911 calls made in Monroe County. When generating the heatmap the population density is considered. You can filter the results by clicking the menu button in the right corner.</p>' +
+            '<p>City Watch is a data visualization utility that plots all the 911 calls made in Monroe County in the past week. When generating the heatmap the population density is considered. You can filter the results by clicking the menu button in the right corner.</p>' +
             '<h3>Developers</h3>' +
             '<p>Eric Lee</p>' +
             '<p>Liam Middlebrook</p>' +
-            '<h3>Credits</h3>' +
+            '<h3>APIs</h3>' +
+            '<p><a href="http://mcsafetyfeed.org">MCSafety Feed</a></p>'+
+            '<h3>Image Credits</h3>' +
             '<p>Menu by David Vickhoff from The Noun Project</p>' + 
             '<p>Castle by Chris Luders from The Noun Project</p>' +
             '<p>Information by John Chapman from The Noun Project</p>' +
