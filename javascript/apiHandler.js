@@ -138,10 +138,15 @@ function parseZipCode(address) {
     addressPieces = address.split(',');
     
     stateZip = new Array();
+    zip = '';
     if(addressPieces.length > 2) 
         stateZip = addressPieces[2].trim().split(' ');
     if(stateZip.length > 1)
-        return stateZip[1].trim();
+        zip =  stateZip[1].trim();
+    
+    re = new RegExp('[0-9]+');
+    if(zip.match(re))
+       return zip;
     
     return '';
 }

@@ -1,4 +1,5 @@
 var aboutShown = false;
+var statShown = false;
 var menuShown = false;
 var aboutAnimating = false;
 
@@ -22,7 +23,6 @@ function clearPopUp(animationComplete) {
             aboutPage = document.getElementById('aboutContent');
             aboutPage.parentElement.removeChild(aboutPage);
             aboutAnimating = false;
-            aboutShown = false;
             animationComplete();
         });
 
@@ -30,13 +30,11 @@ function clearPopUp(animationComplete) {
             aboutPage = document.getElementById('aboutContent');
             aboutPage.parentElement.removeChild(aboutPage); 
             aboutAnimating = false;
-            aboutShown = false;
             animationComplete();
         });
     }
     else {
         aboutAnimating = false;
-        aboutShown = false;
         animationComplete();
     }
 }
@@ -47,12 +45,12 @@ function showPopUp(content, animationComplete) {
     aboutPage = document.getElementById('aboutContent');
     aboutPage.addEventListener('webkitAnimationEnd', function() {
         aboutAnimating = false;
-        aboutShown = true;
+        //aboutShown = true;
         animationComplete();
     });
     aboutPage.addEventListener('animationend', function() {
         aboutAnimating = false;
-        aboutShown = true;
+        //aboutShown = true;
         animationComplete();
     });
 }
@@ -60,41 +58,46 @@ function showPopUp(content, animationComplete) {
 function togglePopUp() {
     if(!aboutAnimating) {
         aboutAnimating = true;
-        if(!aboutShown) {
-            showPopUp(content,function() {});
-        }
+        showPopUp(content,function() {});
     }
 }
 
 function toggleAboutMenu() {
     clearPopUp(function(){
-        content = '<div id="aboutContent">' +
-        '<button class="aboutExitButton" onclick="clearPopUp(function(){})">X</button>' +
-        '<h3>About</h3>' +
-        '<p>City Watch is an application that plots all the 911 calls made in Monroe County. When generating the heatmap the population density is considered. You can filter the results by clicking the menu button in the right corner.</p>' +
-        '<h3>Developers</h3>' +
-        '<p>Eric Lee</p>' +
-        '<p>Liam Middlebrook</p>' +
-        '<h3>Credits</h3>' +
-        '<p>Menu by David Vickhoff from The Noun Project</p>' + 
-        '<p>Castle by Chris Luders from The Noun Project</p>' +
-        '<p>Information by John Chapman from The Noun Project</p>' +
-        '<p>Statistics by Convoy from The Noun Project</p>' +
-        '</div>';
-        togglePopUp(content);
+        if(!aboutShown) {
+            content = '<div id="aboutContent">' +
+            '<button class="aboutExitButton" onclick="exitAboutButtonClicked()">X</button>' +
+            '<h3>About</h3>' +
+            '<p>City Watch is an application that plots all the 911 calls made in Monroe County. When generating the heatmap the population density is considered. You can filter the results by clicking the menu button in the right corner.</p>' +
+            '<h3>Developers</h3>' +
+            '<p>Eric Lee</p>' +
+            '<p>Liam Middlebrook</p>' +
+            '<h3>Credits</h3>' +
+            '<p>Menu by David Vickhoff from The Noun Project</p>' + 
+            '<p>Castle by Chris Luders from The Noun Project</p>' +
+            '<p>Information by John Chapman from The Noun Project</p>' +
+            '<p>Statistics by Convoy from The Noun Project</p>' +
+            '</div>';
+            togglePopUp(content);
+        }
+        aboutShown = !aboutShown;
     });
 }
 
 function toggleStatMenu() {
     clearPopUp(function() {
-        content = '<div id="aboutContent">' +
-            '<button class="aboutDirectionButton" onclick="statReverseClicked()">&#60;</button>' +
-            '<button class="aboutDirectionButton" style="left: 60px;" onclick="statForwardClicked()">&#62;</button>' +
-            '<button class="aboutExitButton" onclick="clearPopUp(function(){})">X</button>' +
-            '<h3>Stats</h3>' +
-            getStatContent(statSlideIndex) +
-            '</div>';
-        togglePopUp(content);
+        if(!statShown) {
+            content = '<div id="aboutContent">' +
+                '<button class="aboutDirectionButton" id="slideForwardButton" onclick="statReverseClicked()">&#60;</button>' +
+                '<button class="aboutDirectionButton" id="slideReverseButton" style="left: 60px;" onclick="statForwardClicked()">&#62;</button>' +
+                '<button class="aboutExitButton" onclick="exitAboutButtonClicked()">X</button>' +
+                '<h3>Stats</h3>' +
+                getStatContent(statSlideIndex) +
+                '</div>';
+            togglePopUp(content);
+            updateSlideDirectionButtons();
+        }
+        statShown = !statShown;
     });
 }
 
@@ -131,6 +134,28 @@ function addSlideWithContent(content) {
     parent.removeChild(statSlide);
     
     parent.innerHTML += content;
+    updateSlideDirectionButtons();
+}
+
+function updateSlideDirectionButtons() {
+    forwardButton = document.getElementById('slideForwardButton');
+    reverseButton = document.getElementById('slideReverseButton');
+    
+    if(statSlideIndex === 0)
+        forwardButton.disabled = true;
+    else
+        forwardButton.disabled = false;
+    
+    if(statSlideIndex === statSlideMaxIndex)
+        reverseButton.disabled = true;
+    else
+        reverseButton.disabled = false;
+}
+
+function exitAboutButtonClicked() {
+    clearPopUp(function() {});
+    aboutShown = false;
+    statShown = false;
 }
 
 function statReverseClicked() {
@@ -138,7 +163,7 @@ function statReverseClicked() {
     if(statSlideIndex > 0) {
         statSlideIndex--;
         content = getStatContent(statSlideIndex);
-        addSlideWithContent(content); 
+        addSlideWithContent(content);
     }
 }
 
@@ -285,10 +310,10 @@ function getStatContent(index) {
             '<th>Percentage</th>' +
             '</tr>';
         for(key in zipMetrics) {
-            metric = Math.round(zipMetrics[key] * 10000) / 10000;
+            metric = Math.round(zipMetrics[key] * 10000) / 100;
             content += '<tr>' +
                 '<td class="tableLabel">' + key + '</td>' +
-                '<td class="tableValue">' + metric + '</td>' +
+                '<td class="tableValue">' + metric + '%</td>' +
                 '</tr>';
         }
         

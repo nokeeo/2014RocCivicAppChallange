@@ -282,15 +282,21 @@ button {
     outline: none;
 }
 
+button:enabled:active {
+    box-shadow: inset 0 2px 2px -1px rgba(0,0,0,0.13);
+    border-color: #d1d1d1; 
+}
+
+button:disabled {
+    background-color: #f0f0f0;
+    border-color: #eee;
+    opacity: .7;
+}
+
 .menuApplyButton {
     position: absolute;
     top: 15px;
     right: 15px;
-}
-
-.menuApplyButton:enabled:active {
-    box-shadow: inset 0 2px 2px -1px rgba(0,0,0,0.13);
-    border-color: #d1d1d1; 
 }
 
 #aboutContent {
