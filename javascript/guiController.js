@@ -7,7 +7,7 @@ var selectedAgencies = [];
 var selectedRegions = [];
 
 var statSlideIndex = 0;
-var statSlideMaxIndex = 1;
+var statSlideMaxIndex = 2;
 
 function clearPopUp(animationComplete) {
     aboutPage = document.getElementById('aboutContent');
@@ -319,5 +319,27 @@ function getStatContent(index) {
         
         content += '</table></div>';
     }
+    
+    else if(index == 2) {
+        zipMetrics = calcPerCapitaZip(filteredData);
+        content += '<div id="statSlide" style="width: 100%">' +
+            '<table>' +
+            '<tr>' +
+            '<th>ZIP Code</th>'+
+            '<th>Calls/Person/Sq. Mile</th>' +
+            '</tr>';
+        for(key in zipMetrics) {
+            metric = Math.round(zipMetrics[key] * 1000000) / 1000000;
+            if(metric > 0) {
+                content += '<tr>' +
+                    '<td class="tableLabel">' + key + '</td>' +
+                    '<td class="tableValue">' + metric + '</td>' +
+                    '</tr>';
+                }
+        }
+        
+        content += '</table></div>';
+    }
+    
     return content;
 }

@@ -232,3 +232,29 @@ function calcZipPercent(data) {
     
     return zipStats;
 }
+
+function calcPerCapitaZip(data) {
+    zipSums = [];
+    for(i = 0; i < data.length; i++) {
+        cluster = data[i];
+        for(k = 0; k < cluster.length; k++) {
+            zip = parseZipCode(cluster[k].fulladdress);
+            if(zip != '') {
+                if(zipSums[zip])
+                    zipSums[zip] = zipSums[zip] + 1;
+                else
+                    zipSums[zip] = 1;
+            }   
+        }
+    }
+    
+    zipStats = [];
+    for(key in zipSums) {
+        if(zipPopDensity[key] > 0)
+            zipStats[key] = zipSums[key] / zipPopDensity[key];
+        else
+            zipStats[key] = 0;
+    }
+    
+    return zipStats;
+}
