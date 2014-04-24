@@ -258,3 +258,29 @@ function calcPerCapitaZip(data) {
     
     return zipStats;
 }
+
+function calcRegionPercent(data) {
+    regionSums = [];
+    sum = 0;
+    for(i = 0; i < data.length; i++) {
+        cluster = data[i];
+        for(k = 0; k < cluster.length; k++) {
+            region = cluster[k]['region'];
+            if(regionSums[region])
+                regionSums[region] += 1;
+            else
+                regionSums[region] = 1;
+            sum++;
+        }
+    }
+    
+    regionMetric = [];
+    for(key in regionSums) {
+        if(sum > 0)
+            regionMetric[key] = regionSums[key] / sum;
+        else
+            regionMetric = 0;
+    }
+    
+    return regionMetric;
+}

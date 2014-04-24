@@ -7,7 +7,7 @@ var selectedAgencies = [];
 var selectedRegions = [];
 
 var statSlideIndex = 0;
-var statSlideMaxIndex = 2;
+var statSlideMaxIndex = 3;
 
 function clearPopUp(animationComplete) {
     aboutPage = document.getElementById('aboutContent');
@@ -323,6 +323,27 @@ function getStatContent(index) {
     }
     
     else if(index == 2) {
+        regionMetric = calcRegionPercent(filteredData);
+        content += '<div id="statSlide" style="width: 100%">' +
+            '<table>' +
+            '<tr>' +
+            '<th>Region</th>'+
+            '<th>Percentage</th>' +
+            '</tr>';
+        for(key in regionMetric) {
+            metric = Math.round(regionMetric[key] * 10000) / 100;
+            if(metric > 0) {
+                content += '<tr>' +
+                    '<td class="tableLabel">' + key + '</td>' +
+                    '<td class="tableValue">' + metric + '%</td>' +
+                    '</tr>';
+                }
+        }
+        
+        content += '</table></div>';
+    }
+    
+    else if(index == 3) {
         zipMetrics = calcPerCapitaZip(filteredData);
         content += '<div id="statSlide" style="width: 100%">' +
             '<table>' +
