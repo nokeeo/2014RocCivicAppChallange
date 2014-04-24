@@ -68,10 +68,10 @@ function toggleAboutMenu() {
             content = '<div id="aboutContent">' +
             '<button class="aboutExitButton" onclick="exitAboutButtonClicked()">X</button>' +
             '<h3>About</h3>' +
-            '<p>City Watch is a data visualization utility that plots all the 911 calls made in Monroe County in the past week. When generating the heatmap the population density is considered. You can filter the results by clicking the menu button in the right corner.</p>' +
+            '<p>City Watch is a data visualization utility that plots all the 911 calls made in Monroe County in the past week. When generating the heatmap the population density is considered. You can filter the results by clicking the menu button in the right corner. This software is published under GPLV3 License and can be found on <a href="https://github.com/nokeeo/CityWatch" style="color: inherit"> Github</a></p>' +
             '<h3>Developers</h3>' +
-            '<p>Eric Lee</p>' +
-            '<p>Liam Middlebrook</p>' +
+            '<p><a href="http://github.com/nokeeo" style="color: inherit">Eric Lee</a></p>' +
+            '<p><a href="https://github.com/liam-middlebrook" style="color: inherit">Liam Middlebrook</a></p>' +
             '<h3>APIs</h3>' +
             '<p><a href="http://mcsafetyfeed.org">MCSafety Feed</a></p>'+
             '<h3>Image Credits</h3>' +
