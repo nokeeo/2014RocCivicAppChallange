@@ -73,7 +73,7 @@ function toggleAboutMenu() {
             '<p><a href="http://github.com/nokeeo" style="color: inherit">Eric Lee</a></p>' +
             '<p><a href="https://github.com/liam-middlebrook" style="color: inherit">Liam Middlebrook</a></p>' +
             '<h3>APIs</h3>' +
-            '<p><a href="http://mcsafetyfeed.org">MCSafety Feed</a></p>'+
+            '<p><a href="http://mcsafetyfeed.org" style="color: inherit">MCSafety Feed</a></p>'+
             '<h3>Image Credits</h3>' +
             '<p>Menu by David Vickhoff from The Noun Project</p>' + 
             '<p>Castle by Chris Luders from The Noun Project</p>' +
